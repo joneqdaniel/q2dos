@@ -1190,6 +1190,8 @@ static void R_DrawPoly( int iswater )
 	R_PolygonScanRightEdge ();
 
 	R_PolygonDrawSpans( s_polygon_spans, iswater );
+
+	s_polygon_spans = NULL; /* silence -Wdangling-pointer warnings */
 }
 
 /*
