@@ -44,7 +44,7 @@ channel_t   channels[MAX_CHANNELS];
 qboolean	snd_initialized = false;
 int			sound_started=0;
 
-volatile dma_t		dma;
+dma_t		dma;
 
 vec3_t		listener_origin;
 vec3_t		listener_forward;

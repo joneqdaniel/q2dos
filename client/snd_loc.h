@@ -165,7 +165,7 @@ extern	vec3_t	listener_origin;
 extern	vec3_t	listener_forward;
 extern	vec3_t	listener_right;
 extern	vec3_t	listener_up;
-extern	volatile dma_t	dma; /* FS: made it volatile for DOS */
+extern	dma_t	dma;
 extern	playsound_t	s_pendingplays;
 
 #define	MAX_RAW_SAMPLES	8192

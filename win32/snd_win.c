@@ -616,7 +616,7 @@ qboolean SNDDMA_Init(void)
 {
 	sndinitstat	stat;
 
-	memset ((void *)&dma, 0, sizeof (dma));
+	memset (&dma, 0, sizeof (dma));
 
 	s_wavonly = Cvar_Get ("s_wavonly", "0", 0);
 
