@@ -66,7 +66,6 @@ int			ip_sockets[2];
 int			ipx_sockets[2];
 
 int NET_Socket (char *net_interface, int port);
-char *NET_ErrorString (void);
 
 //=============================================================================
 
@@ -248,7 +247,6 @@ qboolean	NET_StringToAdr (char *s, netadr_t *a)
 	return true;
 }
 
-
 qboolean	NET_IsLocalAddress (netadr_t adr)
 {
 	return NET_CompareAdr (adr, net_local_adr);
@@ -288,7 +286,6 @@ qboolean	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_me
 
 	return true;
 }
-
 
 void NET_SendLoopPacket (netsrc_t sock, int length, void *data, netadr_t to)
 {

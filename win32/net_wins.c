@@ -46,8 +46,6 @@ loopback_t	loopbacks[2];
 SOCKET			ip_sockets[2];
 SOCKET			ipx_sockets[2];
 
-char *NET_ErrorString (void);
-
 //=============================================================================
 
 void NetadrToSockadr (netadr_t *a, struct sockaddr *s)
@@ -275,7 +273,6 @@ qboolean	NET_StringToAdr (char *s, netadr_t *a)
 	return true;
 }
 
-
 qboolean	NET_IsLocalAddress (netadr_t adr)
 {
 	return adr.type == NA_LOOPBACK;
@@ -312,7 +309,6 @@ qboolean	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_me
 	return true;
 
 }
-
 
 void NET_SendLoopPacket (netsrc_t sock, int length, void *data, netadr_t to)
 {

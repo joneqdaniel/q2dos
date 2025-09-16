@@ -574,6 +574,8 @@ typedef struct
 void		NET_Init (void);
 void		NET_Shutdown (void);
 
+char		*NET_ErrorString(void);
+
 void		NET_Config (qboolean multiplayer);
 
 qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message);
