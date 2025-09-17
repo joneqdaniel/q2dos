@@ -32,8 +32,14 @@ typedef struct
 	int         color;
 } partparms_t;
 
-/*static */partparms_t partparms;
-/*static */unsigned int s_prefetch_address;
+#if !id386
+static
+#endif
+partparms_t partparms;
+
+#if (id386)
+extern unsigned int s_prefetch_address;
+#endif
 
 #if !(id386)
 /*
