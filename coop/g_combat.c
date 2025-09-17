@@ -517,7 +517,7 @@ Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
 				attacker->client &&
 				attacker->client->pers.netname[0] &&
 				targ->classname &&
-				!stricmp(targ->classname, "monster_turret")) /* FS: Coop: monster_turrets have MOVETYPE_NONE so they stop here. */
+				!Q_stricmp(targ->classname, "monster_turret")) /* FS: Coop: monster_turrets have MOVETYPE_NONE so they stop here. */
 			{
 				GetCoopMeansOfDeath(targ->classname, attacker->client->pers.netname);
 			}

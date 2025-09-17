@@ -204,7 +204,7 @@ static void _sl_LogTime( void )
 
 static void _sl_LogDeathFlags( unsigned int dmFlags )
 {
-    fprintf( StdLogFile, "\t\tLogDeathFlags\t%lu\n", dmFlags );
+    fprintf( StdLogFile, "\t\tLogDeathFlags\t%u\n", dmFlags );
 }
 
 static void _sl_LogMapName( char *pMapName )
