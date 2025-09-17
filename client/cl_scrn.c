@@ -89,7 +89,7 @@ char		*sb_nums[2][11] =
 
 #define	ICON_WIDTH	24
 #define	ICON_HEIGHT	24
-#define	CHAR_WIDTH	16
+#define	CHARACTER_WIDTH	16
 #define	ICON_SPACE	8
 // end Knightmare
 
@@ -1058,13 +1058,13 @@ void SCR_DrawField (int x, int y, int color, int width, int value)
 		width = 5;
 
 	SCR_AddDirtyPoint (x, y);
-	SCR_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
+	SCR_AddDirtyPoint (x+width*CHARACTER_WIDTH+2, y+23);
 
 	Com_sprintf (num, sizeof(num), "%i", value);
 	l = strlen(num);
 	if (l > width)
 		l = width;
-	x += 2 + CHAR_WIDTH*(width - l);
+	x += 2 + CHARACTER_WIDTH*(width - l);
 
 	ptr = num;
 	while (*ptr && l)
@@ -1075,7 +1075,7 @@ void SCR_DrawField (int x, int y, int color, int width, int value)
 			frame = *ptr -'0';
 
 		re.DrawPic (x,y,sb_nums[color][frame]);
-		x += CHAR_WIDTH;
+		x += CHARACTER_WIDTH;
 		ptr++;
 		l--;
 	}
