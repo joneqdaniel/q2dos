@@ -11,11 +11,11 @@
 eight_thousand_hex: .single	32768.0
 
 	.bss
-.lcomm  short_izi 1
+.lcomm	short_izi, 1
 
 	.align 4
 
-#ifdef __ELF__
+#ifdef ELF
 .local	transformed_vec, local_vec, ebpsave, v, u, tmp, zi
 .comm	transformed_vec, 12, 4
 .comm	local_vec, 12, 4
