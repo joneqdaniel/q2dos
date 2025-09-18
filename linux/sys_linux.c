@@ -85,11 +85,6 @@ void Sys_Quit (void)
 	exit (0);
 }
 
-void Sys_Sleep (unsigned msec)
-{
-	usleep (msec*1000);
-}
-
 void Sys_Init(void)
 {
 }
@@ -303,7 +298,7 @@ void Sys_CopyProtect(void)
 
 //=======================================================================
 
-void Sys_SleepMilliseconds (unsigned ms)
+void Sys_Sleep (unsigned ms)
 {
 	usleep(ms * 1000);
 }
@@ -423,7 +418,7 @@ int main (int argc, char **argv)
 		if (dedicated && dedicated->value) {
 			frametime = Sys_Milliseconds () - newtime;
 			if (frametime < 8)
-				Sys_SleepMilliseconds (8 - frametime);
+				Sys_Sleep (8 - frametime);
 		}
 	}
 
