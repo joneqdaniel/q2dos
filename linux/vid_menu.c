@@ -36,6 +36,16 @@ static const ref_t possible_refs[NUMBER_OF_REFS] =
 	{ "[OpenGL        ]", "gl",      &REF_GL      },
 };
 
+#if defined(SDL_CLIENT) /* to load SDL's default opengl driver -- see qgl_linux.c */
+#define DEFAULT_LIBGL ""
+#elif defined(__APPLE__)
+#define DEFAULT_LIBGL "/System/Library/Frameworks/OpenGL.framework/Libraries/libGL.dylib"
+#elif defined(__NetBSD__)||defined(__OpenBSD__)||defined(__sgi__)
+#define DEFAULT_LIBGL "libGL.so"
+#else /* other unix */
+#define DEFAULT_LIBGL "libGL.so.1"
+#endif
+
 /*
 ====================================================================
 */
@@ -215,15 +225,7 @@ static void ApplyChanges( void *unused )
 	else if ( ref == REF_GL )
 	{
 		Cvar_Set( "vid_ref", "gl" );
-#ifdef SDL_CLIENT /* to load SDL's default opengl driver -- see qgl_linux.c */
-		Cvar_Get( "gl_driver", "", 0 );
-#elif defined(__APPLE__)
-		Cvar_Get( "gl_driver", "/System/Library/Frameworks/OpenGL.framework/Libraries/libGL.dylib", 0);
-#elif defined(__NetBSD__)||defined(__OpenBSD__)||defined(__sgi__)
-		Cvar_Get( "gl_driver", "libGL.so", 0 );
-#else /* other unix */
-		Cvar_Get( "gl_driver", "libGL.so.1", 0 );
-#endif
+		Cvar_Get( "gl_driver", DEFAULT_LIBGL, 0 );
 		if (gl_driver->modified)
 			vid_ref->modified = true;
 	}
@@ -396,7 +398,7 @@ void VID_MenuInit( void )
 	refs[counter] = NULL;
 
 	if ( !gl_driver )
-		gl_driver = Cvar_Get( "gl_driver", "libGL.so", 0 );
+		gl_driver = Cvar_Get( "gl_driver", DEFAULT_LIBGL, 0 );
 	if ( !gl_picmip )
 		gl_picmip = Cvar_Get( "gl_picmip", "0", 0 );
 	if ( !gl_mode )
