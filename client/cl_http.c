@@ -23,6 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef USE_CURL
 
+#if (LIBCURL_VERSION_NUM >= 0x071506) && !defined(CURLOPT_ENCODING)
+#define CURLOPT_ENCODING CURLOPT_ACCEPT_ENCODING
+#endif
+
 cvar_t	*cl_http_downloads;
 cvar_t	*cl_http_filelists;
 cvar_t	*cl_http_proxy;
