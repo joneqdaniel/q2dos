@@ -42,9 +42,10 @@ void *Hunk_Begin (int maxsize)
 {
 	// reserve a huge chunk of memory, but don't commit any yet
 	cursize = 0;
+
 	hunkmaxsize = maxsize;
 #ifdef VIRTUAL_ALLOC
-	membase = VirtualAlloc (NULL, maxsize, MEM_RESERVE, PAGE_NOACCESS);
+	membase = (byte *)VirtualAlloc (NULL, maxsize, MEM_RESERVE, PAGE_NOACCESS);
 #else
 	membase = malloc (maxsize);
 	memset (membase, 0, maxsize);
@@ -141,7 +142,7 @@ void Sys_Mkdir (char *path)
 
 char	findbase[MAX_OSPATH];
 char	findpath[MAX_OSPATH];
-int		findhandle;
+intptr_t	findhandle;
 
 static qboolean CompareAttributes( unsigned found, unsigned musthave, unsigned canthave )
 {
@@ -173,11 +174,9 @@ static qboolean CompareAttributes( unsigned found, unsigned musthave, unsigned c
 char *Sys_FindFirst (char *path, unsigned musthave, unsigned canthave )
 {
 	struct _finddata_t findinfo;
-
 	if (findhandle)
 		Sys_Error ("Sys_BeginFind without close");
 	findhandle = 0;
-
 	COM_FilePath (path, findbase);
 	findhandle = _findfirst (path, &findinfo);
 	if (findhandle == -1)
@@ -191,14 +190,12 @@ char *Sys_FindFirst (char *path, unsigned musthave, unsigned canthave )
 char *Sys_FindNext ( unsigned musthave, unsigned canthave )
 {
 	struct _finddata_t findinfo;
-
 	if (findhandle == -1)
 		return NULL;
 	if (_findnext (findhandle, &findinfo) == -1)
 		return NULL;
 	if ( !CompareAttributes( findinfo.attrib, musthave, canthave ) )
 		return NULL;
-
 	Com_sprintf (findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
 	return findpath;
 }
@@ -212,4 +209,3 @@ void Sys_FindClose (void)
 
 
 //============================================
-

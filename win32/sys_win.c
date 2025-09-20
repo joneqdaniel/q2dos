@@ -121,7 +121,7 @@ void WinError (void)
 	);
 
 	// Display the string.
-	MessageBox( NULL, lpMsgBuf, "GetLastError", MB_OK|MB_ICONINFORMATION );
+	MessageBox( NULL, (const char *)lpMsgBuf, "GetLastError", MB_OK|MB_ICONINFORMATION );
 
 	// Free the buffer.
 	LocalFree(lpMsgBuf);
@@ -394,9 +394,9 @@ char *Sys_GetClipboardData (void)
 	{
 		HANDLE hClipboardData;
 
-		if ( (hClipboardData = GetClipboardData(CF_TEXT)) != 0)
+		if ((hClipboardData = GetClipboardData(CF_TEXT)) != NULL)
 		{
-			if ( (cliptext = GlobalLock(hClipboardData)) != 0) 
+			if ((cliptext = (char *)GlobalLock(hClipboardData)) != NULL)
 			{
 				data = malloc(GlobalSize(hClipboardData) + 1);
 				if (!data)
@@ -506,7 +506,7 @@ void *Sys_GetGameAPI (void *parms)
 #endif
 
 	if (game_library)
-		Com_Error (ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadingGame");
+		Com_Error (ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadGame");
 
 	// check the current debug directory first for development purposes
 	_getcwd (cwd, sizeof(cwd));
@@ -567,8 +567,9 @@ ParseCommandLine
 */
 void ParseCommandLine (LPSTR lpCmdLine)
 {
+	static char exe[] = "exe";
 	argc = 1;
-	argv[0] = "exe";
+	argv[0] = exe;
 
 	while (*lpCmdLine && (argc < MAX_NUM_ARGVS))
 	{
@@ -724,9 +725,9 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	int				time, oldtime, newtime;
 	char			*cddir;
 
-    /* previous instances do not exist in Win32 */
-    if (hPrevInstance)
-        return 0;
+	/* previous instances do not exist in Win32 */
+	if (hPrevInstance)
+		return 0;
 
 	if (hInstance)
 		strncpy (cmdline, lpCmdLine, sizeof(cmdline) - 1);

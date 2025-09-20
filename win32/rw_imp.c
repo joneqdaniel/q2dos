@@ -42,13 +42,13 @@ swwstate_t sww_state;
 */
 #define	WINDOW_CLASS_NAME "Q2DOS"
 
-void VID_CreateWindow( int width, int height, int stylebits )
+void VID_CreateWindow( int width, int height, unsigned long stylebits )
 {
 	WNDCLASS		wc;
 	RECT			r;
 	cvar_t			*vid_xpos, *vid_ypos, *vid_fullscreen;
 	int				x, y, w, h;
-	int				exstyle;
+	unsigned long		exstyle;
 
 	vid_xpos = ri.Cvar_Get ("vid_xpos", "0", 0);
 	vid_ypos = ri.Cvar_Get ("vid_ypos", "0", 0);
@@ -67,7 +67,7 @@ void VID_CreateWindow( int width, int height, int stylebits )
     wc.hInstance     = sww_state.hInstance;
     wc.hIcon         = 0;
     wc.hCursor       = LoadCursor (NULL,IDC_ARROW);
-	wc.hbrBackground = (void *)COLOR_GRAYTEXT;
+	wc.hbrBackground = (HBRUSH)COLOR_GRAYTEXT;
     wc.lpszMenuName  = 0;
     wc.lpszClassName = WINDOW_CLASS_NAME;
 
@@ -146,7 +146,7 @@ static qboolean SWimp_InitGraphics( qboolean fullscreen )
 	{
 		if ( !DIB_Init( &vid.buffer, &vid.rowbytes ) )
 		{
-			vid.buffer = 0;
+			vid.buffer = NULL;
 			vid.rowbytes = 0;
 
 			return false;
@@ -156,7 +156,7 @@ static qboolean SWimp_InitGraphics( qboolean fullscreen )
 	{
 		if ( !DDRAW_Init( &vid.buffer, &vid.rowbytes ) )
 		{
-			vid.buffer = 0;
+			vid.buffer = NULL;
 			vid.rowbytes = 0;
 
 			return false;

@@ -124,7 +124,7 @@ DLL GLUE
 */
 
 #define	MAXPRINTMSG	4096
-void __attribute__((__format__(__printf__,2,3)))
+static void __attribute__((__format__(__printf__,2,3)))
 VID_Printf (int print_level, const char *fmt, ...)
 {
 	va_list		argptr;
@@ -136,13 +136,9 @@ VID_Printf (int print_level, const char *fmt, ...)
 	msg[sizeof(msg)-1] = 0;
 
 	if (print_level == PRINT_ALL)
-	{
 		Com_Printf ("%s", msg);
-	}
 	else if ( print_level == PRINT_DEVELOPER )
-	{
 		Com_DPrintf(DEVELOPER_MSG_GFX, "%s", msg);
-	}
 	else if ( print_level == PRINT_ALERT )
 	{
 		MessageBox( 0, msg, "PRINT_ALERT", MB_ICONWARNING );
@@ -150,7 +146,7 @@ VID_Printf (int print_level, const char *fmt, ...)
 	}
 }
 
-void __attribute__((__noreturn__, __format__(__printf__,2,3)))
+static void __attribute__((__noreturn__, __format__(__printf__,2,3)))
 VID_Error (int err_level, const char *fmt, ...)
 {
 	va_list		argptr;
@@ -340,7 +336,6 @@ LRESULT WINAPI MainWndProc (
 
 	case WM_CREATE:
 		cl_hwnd = hWnd;
-
 		MSH_MOUSEWHEEL = RegisterWindowMessage("MSWHEEL_ROLLMSG"); 
         return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
@@ -407,19 +402,14 @@ LRESULT WINAPI MainWndProc (
 	case WM_MBUTTONUP:
 	case WM_MOUSEMOVE:
 		{
-			int	temp;
-
-			temp = 0;
+			int	temp = 0;
 
 			if (wParam & MK_LBUTTON)
 				temp |= 1;
-
 			if (wParam & MK_RBUTTON)
 				temp |= 2;
-
 			if (wParam & MK_MBUTTON)
 				temp |= 4;
-
 			IN_MouseEvent (temp);
 		}
 		break;
@@ -600,7 +590,7 @@ qboolean VID_LoadRefresh( char *name )
 	Com_Printf( "------- Loading %s -------\n", name );
 
 #ifndef REF_HARD_LINKED
-	if ( ( reflib_library = LoadLibrary( name ) ) == NULL )
+	if ((reflib_library = LoadLibrary(name)) == NULL)
 	{
 		Com_Printf( "LoadLibrary(\"%s\") failed\n", name );
 		return false;
@@ -626,7 +616,7 @@ qboolean VID_LoadRefresh( char *name )
 	ri.Vid_NewWindow = VID_NewWindow;
 
 #ifndef REF_HARD_LINKED
-	if ( ( GetRefAPI = (void *) GetProcAddress( reflib_library, "GetRefAPI" ) ) == NULL )
+	if ((GetRefAPI = (GetRefAPI_t) GetProcAddress(reflib_library, "GetRefAPI")) == NULL)
 		Com_Error( ERR_FATAL, "GetProcAddress failed on %s", name );
 #endif
 
@@ -638,7 +628,7 @@ qboolean VID_LoadRefresh( char *name )
 		Com_Error (ERR_FATAL, "%s has incompatible api_version", name);
 	}
 
-	if ( re.Init( global_hInstance, MainWndProc ) == -1 )
+	if (re.Init((void *) global_hInstance, (void *) MainWndProc) == -1)
 	{
 		re.Shutdown();
 		VID_FreeReflib ();
@@ -767,7 +757,7 @@ void VID_Init (void)
 		cvar_t *gl_driver = Cvar_Get( "gl_driver", "opengl32", 0 );
 		cvar_t *gl_mode = Cvar_Get( "gl_mode", "3", 0 );
 
-		if ( stricmp( gl_driver->string, "3dfxgl" ) == 0 )
+		if ( Q_stricmp( gl_driver->string, "3dfxgl" ) == 0 )
 		{
 			Cvar_SetValue( "gl_mode", 3 );
 			viddef.width  = 640;
@@ -777,9 +767,9 @@ void VID_Init (void)
 #endif
 
 	/* Disable the 3Dfx splash screen */
-	putenv("FX_GLIDE_NO_SPLASH=1");
+	_putenv("FX_GLIDE_NO_SPLASH=1");
 	/* don't let fxMesa cheat multitexturing */
-	putenv("FX_DONT_FAKE_MULTITEX=1");
+	_putenv("FX_DONT_FAKE_MULTITEX=1");
 
 	/* Start the graphics mode and load refresh DLL */
 	VID_CheckChanges();

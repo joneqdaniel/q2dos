@@ -108,7 +108,9 @@ cvar_t	*m_filter;
 
 qboolean	mlooking;
 
-void IN_MLookDown (void) { mlooking = true; }
+void IN_MLookDown (void) {
+	mlooking = true;
+}
 void IN_MLookUp (void) {
 	mlooking = false;
 	if (!freelook->value && lookspring->value)
@@ -572,7 +574,7 @@ PDWORD RawValuePointer (int axis)
 		return &ji.dwVpos;
 	}
 
-	return 0; // FS: Compiler warning
+	return NULL;
 }
 
 
@@ -658,9 +660,7 @@ void IN_Commands (void)
 	DWORD	buttonstate, povstate;
 
 	if (!joy_avail)
-	{
 		return;
-	}
 
 	// loop through the joystick buttons
 	// key a joystick event or auxillary event for higher number buttons for each state change
@@ -756,7 +756,7 @@ void IN_JoyMove (usercmd_t *cmd)
 
 	// complete initialization if first time in
 	// this is needed as cvars are not available at initialization time
-	if( joy_advancedinit != true )
+	if(!joy_advancedinit)
 	{
 		Joy_AdvancedUpdate_f();
 		joy_advancedinit = true;
@@ -769,7 +769,7 @@ void IN_JoyMove (usercmd_t *cmd)
 	}
  
 	// collect the joystick data, if possible
-	if (IN_ReadJoystick () != true)
+	if (!IN_ReadJoystick())
 	{
 		return;
 	}
@@ -885,4 +885,3 @@ void IN_JoyMove (usercmd_t *cmd)
 		}
 	}
 }
-

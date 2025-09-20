@@ -158,7 +158,7 @@ failed:
 static void HWGamma_Check3dfxGamma (void)
 {
 	const char *extensions = (const char *) qglGetString(GL_EXTENSIONS);
-	if (strstr(extensions, "WGL_3DFX_gamma_control")) {
+	if (extensions && strstr(extensions, "WGL_3DFX_gamma_control")) {
 		if (!r_ignorehwgamma->intValue) {
 			qwglGetDeviceGammaRamp3DFX = (BOOL (WINAPI *)(HDC, LPVOID)) qwglGetProcAddress("wglGetDeviceGammaRamp3DFX");
 			qwglSetDeviceGammaRamp3DFX = (BOOL (WINAPI *)(HDC, LPVOID)) qwglGetProcAddress("wglSetDeviceGammaRamp3DFX");
@@ -741,7 +741,6 @@ void GLimp_Shutdown( void )
 	}
 }
 
-
 /*
 ** GLimp_Init
 **
@@ -857,7 +856,7 @@ qboolean GLimp_InitGL (void)
 	/*
 	** figure out if we're running on a minidriver or not
 	*/
-	if ( strstr( gl_driver->string, "opengl32" ) != 0 )
+	if (strstr( gl_driver->string, "opengl32" ) != NULL)
 		glw_state.minidriver = false;
 	else
 		glw_state.minidriver = true;
@@ -943,7 +942,6 @@ qboolean GLimp_InitGL (void)
 	if ( ( glw_state.hGLRC = qwglCreateContext( glw_state.hDC ) ) == 0 )
 	{
 		ri.Con_Printf (PRINT_ALL, "GLimp_Init() - qwglCreateContext failed\n");
-
 		goto fail;
 	}
 
@@ -1018,7 +1016,6 @@ fail:
 	return false;
 }
 
-
 /*
 ** GLimp_BeginFrame
 */
@@ -1081,7 +1078,7 @@ void GLimp_EndFrame (void)
 		GL_PrintError (err, "GLimp_EndFrame");
 	// end Knightmare
 
-	if ( stricmp( gl_drawbuffer->string, "GL_BACK" ) == 0 )
+	if ( Q_stricmp( gl_drawbuffer->string, "GL_BACK" ) == 0 )
 	{
 		if ( !qwglSwapBuffers( glw_state.hDC ) )
 			ri.Sys_Error( ERR_FATAL, "GLimp_EndFrame() - SwapBuffers() failed!\n" );

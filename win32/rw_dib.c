@@ -26,15 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../ref_soft/r_local.h"
 #include "rw_win.h"
 
-#ifndef _WIN32
-#  error You should not be trying to compile this file on this platform
-#endif
-
 static qboolean s_systemcolors_saved;
 
 static HGDIOBJ previously_selected_GDI_obj;
 
-static INT s_syspalindices[] = 
+static int s_syspalindices[] =
 {
   COLOR_ACTIVEBORDER,
   COLOR_ACTIVECAPTION,
@@ -58,7 +54,7 @@ static INT s_syspalindices[] =
   COLOR_WINDOWTEXT
 };
 
-#define NUM_SYS_COLORS ( sizeof( s_syspalindices ) / sizeof( int ) )
+#define NUM_SYS_COLORS (int)(sizeof(s_syspalindices) / sizeof(int))
 
 static COLORREF s_oldsyscolors[NUM_SYS_COLORS];
 

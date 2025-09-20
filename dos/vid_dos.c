@@ -343,6 +343,9 @@ static qboolean VID_LoadRefresh (const char *name)
 	return true;
 }
 
+static char fxmesa_env_multitex[32] = "FX_DONT_FAKE_MULTITEX=1";
+static char fxglide_env_nosplash[32] = "FX_GLIDE_NO_SPLASH=1";
+
 void	VID_Init (void)
 {
 	/* putenv() from DJGPP libc will copy, so
@@ -383,9 +386,9 @@ void	VID_Init (void)
 	Cmd_AddCommand("vid_listmodes", VID_ListModes_f);
 
 	/* don't let fxMesa cheat multitexturing */
-	putenv("FX_DONT_FAKE_MULTITEX=1");
+	putenv(fxmesa_env_multitex);
 	/* disable the 3dfx splash screen. */
-	putenv("FX_GLIDE_NO_SPLASH=1");
+	putenv(fxglide_env_nosplash);
 
 	/* Start the graphics mode and load refresh DLL */
 	VID_CheckChanges ();

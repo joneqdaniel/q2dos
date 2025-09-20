@@ -209,7 +209,7 @@ void *Sys_GetGameAPI (void *parms)
 #endif
 
 	if (game_library)
-		Com_Error (ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadingGame");
+		Com_Error (ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadGame");
 
 	Com_Printf("------- Loading %s -------\n", gamename);
 

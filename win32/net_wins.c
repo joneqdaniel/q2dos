@@ -61,7 +61,8 @@ void NetadrToSockadr (netadr_t *a, struct sockaddr *s)
 	else if (a->type == NA_IP)
 	{
 		((struct sockaddr_in *)s)->sin_family = AF_INET;
-		((struct sockaddr_in *)s)->sin_addr.s_addr = *(int *)&a->ip;
+	//	((struct sockaddr_in *)s)->sin_addr.s_addr = *(int *)&a->ip;
+		memcpy (& ((struct sockaddr_in *)s)->sin_addr, a->ip, 4);
 		((struct sockaddr_in *)s)->sin_port = a->port;
 	}
 	else if (a->type == NA_IPX)
@@ -85,7 +86,8 @@ void SockadrToNetadr (struct sockaddr *s, netadr_t *a)
 	if (s->sa_family == AF_INET)
 	{
 		a->type = NA_IP;
-		*(int *)&a->ip = ((struct sockaddr_in *)s)->sin_addr.s_addr;
+	//	*(int *)&a->ip = ((struct sockaddr_in *)s)->sin_addr.s_addr;
+		memcpy (a->ip, & ((struct sockaddr_in *)s)->sin_addr, 4);
 		a->port = ((struct sockaddr_in *)s)->sin_port;
 	}
 	else if (s->sa_family == AF_IPX)
@@ -96,7 +98,6 @@ void SockadrToNetadr (struct sockaddr *s, netadr_t *a)
 		a->port = ((struct sockaddr_ipx *)s)->sa_socket;
 	}
 }
-
 
 qboolean	NET_CompareAdr (netadr_t a, netadr_t b)
 {
@@ -112,14 +113,14 @@ qboolean	NET_CompareAdr (netadr_t a, netadr_t b)
 			return true;
 		return false;
 	}
-
 	if (a.type == NA_IPX)
 	{
 		if ((memcmp(a.ipx, b.ipx, 10) == 0) && a.port == b.port)
 			return true;
 		return false;
 	}
-	return false; // FS: Compiler warning
+
+	return false;
 }
 
 /*
@@ -135,7 +136,7 @@ qboolean	NET_CompareBaseAdr (netadr_t a, netadr_t b)
 		return false;
 
 	if (a.type == NA_LOOPBACK)
-		return TRUE;
+		return true;
 
 	if (a.type == NA_IP)
 	{
@@ -143,14 +144,14 @@ qboolean	NET_CompareBaseAdr (netadr_t a, netadr_t b)
 			return true;
 		return false;
 	}
-
 	if (a.type == NA_IPX)
 	{
 		if ((memcmp(a.ipx, b.ipx, 10) == 0))
 			return true;
 		return false;
 	}
-	return false; // FS: Compiler warning
+
+	return false;
 }
 
 char	*NET_AdrToString (netadr_t a)
@@ -166,7 +167,6 @@ char	*NET_AdrToString (netadr_t a)
 
 	return s;
 }
-
 
 /*
 =============
@@ -191,7 +191,7 @@ qboolean	NET_StringToSockaddr (char *s, struct sockaddr *sadr)
 	char	*colon;
 	int		val;
 	char	copy[128];
-	
+
 	memset (sadr, 0, sizeof(*sadr));
 
 	if ((strlen(s) >= 23) && (s[8] == ':') && (s[21] == ':'))	// check for an IPX address
@@ -214,7 +214,6 @@ qboolean	NET_StringToSockaddr (char *s, struct sockaddr *sadr)
 	else
 	{
 		((struct sockaddr_in *)sadr)->sin_family = AF_INET;
-		
 		((struct sockaddr_in *)sadr)->sin_port = 0;
 
 		strcpy (copy, s);
@@ -223,18 +222,18 @@ qboolean	NET_StringToSockaddr (char *s, struct sockaddr *sadr)
 			if (*colon == ':')
 			{
 				*colon = 0;
-				((struct sockaddr_in *)sadr)->sin_port = htons((short)atoi(colon+1));	
+				((struct sockaddr_in *)sadr)->sin_port = htons((short)atoi(colon+1));
 			}
 		
 		if (copy[0] >= '0' && copy[0] <= '9')
 		{
-			*(int *)&((struct sockaddr_in *)sadr)->sin_addr = inet_addr(copy);
+			((struct sockaddr_in *)sadr)->sin_addr.s_addr = inet_addr(copy);
 		}
 		else
 		{
 			if (! (h = gethostbyname(copy)) )
-				return 0;
-			*(int *)&((struct sockaddr_in *)sadr)->sin_addr = *(int *)h->h_addr_list[0];
+				return false;
+			((struct sockaddr_in *)sadr)->sin_addr.s_addr = *(u_long *) h->h_addr_list[0];
 		}
 	}
 	
@@ -307,7 +306,6 @@ qboolean	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_me
 	memset (net_from, 0, sizeof(*net_from));
 	net_from->type = NA_LOOPBACK;
 	return true;
-
 }
 
 void NET_SendLoopPacket (netsrc_t sock, int length, void *data, netadr_t to)
@@ -344,7 +342,6 @@ qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 			net_socket = ip_sockets[sock];
 		else
 			net_socket = ipx_sockets[sock];
-
 		if (!net_socket)
 			continue;
 
@@ -357,7 +354,6 @@ qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 		if (ret == SOCKET_ERROR)
 		{
 			err = WSAGetLastError();
-
 			if (err == WSAEWOULDBLOCK)
 				continue;
 			if (err == WSAEMSGSIZE) {
@@ -370,18 +366,18 @@ qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 			{
 				if(err == WSAECONNRESET) /* FS: Don't need to see this spam from connecting to ourselves */
 				{
-					Com_DPrintf (DEVELOPER_MSG_NET, "NET_GetPacket: %s from %s\n", NET_ErrorString(),
-							NET_AdrToString(*net_from));
+					Com_DPrintf (DEVELOPER_MSG_NET, "NET_GetPacket: \"%s\" from %s\n",
+							NET_ErrorString(), NET_AdrToString(*net_from));
 				}
 				else
 				{
-					Com_Printf ("NET_GetPacket: %s from %s\n", NET_ErrorString(),
+					Com_Printf ("NET_GetPacket: \"%s\" from %s\n", NET_ErrorString(),
 							NET_AdrToString(*net_from));
 				}
 			}
 			else
 			{
-				Com_Error (ERR_DROP, "NET_GetPacket: %s from %s", 
+				Com_Error (ERR_DROP, "NET_GetPacket: \"%s\" from %s",
 						NET_ErrorString(), NET_AdrToString(*net_from));
 			}
 			continue;
@@ -461,25 +457,24 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 
 		if (dedicated->intValue)	// let dedicated servers continue after errors
 		{
-			Com_Printf ("NET_SendPacket ERROR: %s to %s\n", NET_ErrorString(),
+			Com_Printf ("NET_SendPacket ERROR: \"%s\" to %s\n", NET_ErrorString(),
 				NET_AdrToString (to));
 		}
 		else
 		{
 			if (err == WSAEADDRNOTAVAIL)
 			{
-				Com_DPrintf (DEVELOPER_MSG_NET, "NET_SendPacket Warning: %s : %s\n", 
+				Com_DPrintf (DEVELOPER_MSG_NET, "NET_SendPacket Warning: %s : %s\n",
 						NET_ErrorString(), NET_AdrToString (to));
 			}
 			else
 			{
-				Com_Error (ERR_DROP, "NET_SendPacket ERROR: %s to %s\n", 
+				Com_Error (ERR_DROP, "NET_SendPacket ERROR: \"%s\" to %s\n",
 						NET_ErrorString(), NET_AdrToString (to));
 			}
 		}
 	}
 }
-
 
 //=============================================================================
 
@@ -541,7 +536,6 @@ SOCKET NET_IPSocket (char *net_interface, int port)
 	return newsocket;
 }
 
-
 /*
 ====================
 NET_OpenIP
@@ -592,7 +586,6 @@ void NET_OpenIP (void)
 			ip_sockets[NS_CLIENT] = NET_IPSocket (ip->string, PORT_ANY);
 	}
 }
-
 
 /*
 ====================
@@ -646,7 +639,6 @@ SOCKET NET_IPXSocket (int port)
 	return newsocket;
 }
 
-
 /*
 ====================
 NET_OpenIPX
@@ -691,7 +683,6 @@ void NET_OpenIPX (void)
 			ipx_sockets[NS_CLIENT] = NET_IPXSocket (PORT_ANY);
 	}
 }
-
 
 /*
 ====================
