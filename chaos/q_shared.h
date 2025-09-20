@@ -283,7 +283,7 @@ void COM_DefaultExtension (char *path, char *extension);
 char *COM_Parse (char **data_p);
 // data is an in/out parm, returns a parsed out token
 
-void Com_sprintf (char *dest, int size, char *fmt, ...) __attribute__((__format__(__printf__,3,4)));
+void Com_sprintf (char *dest, int size, const char *fmt, ...) __attribute__((__format__(__printf__,3,4)));
 // Knightmare added
 void Com_strcpy (char *dest, int destSize, const char *src);
 void Com_strcat (char *dest, int destSize, const char *src);
@@ -294,9 +294,9 @@ void Com_PageInMemory (byte *buffer, int size);
 //=============================================
 
 // portable case insensitive compare
-int Q_stricmp (char *s1, char *s2);
-int Q_strcasecmp (char *s1, char *s2);
-int Q_strncasecmp (char *s1, char *s2, int n);
+int Q_stricmp (const char *s1, const char *s2);
+int Q_strcasecmp (const char *s1, const char *s2);
+int Q_strncasecmp (const char *s1, const char *s2, int n);
 /* FS: From KMQ2 */
 void Q_strncpyz (char *dst, const char *src, int dstSize);
 void Q_strncatz (char *dst, const char *src, int dstSize);
@@ -313,7 +313,7 @@ float	BigFloat (float l);
 float	LittleFloat (float l);
 
 void	Swap_Init (void);
-char	*va(char *format, ...) __attribute__((__format__(__printf__,1,2)));
+char	*va(const char *format, ...) __attribute__((__format__(__printf__,1,2)));
 
 //=============================================
 
@@ -374,8 +374,8 @@ char	*Sys_FindNext ( unsigned musthave, unsigned canthave );
 void	Sys_FindClose (void);
 
 // this is only here so the functions in q_shared.c and q_shwin.c can link
-void Sys_Error (char *error, ...) __attribute__((__noreturn__, __format__(__printf__,1,2)));
-void Com_Printf (char *msg, ...) __attribute__((__format__(__printf__,1,2)));
+void Sys_Error (const char *error, ...) __attribute__((__noreturn__, __format__(__printf__,1,2)));
+void Com_Printf (const char *msg, ...) __attribute__((__format__(__printf__,1,2)));
 
 
 /*

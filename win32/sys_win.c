@@ -64,7 +64,7 @@ SYSTEM IO
 
 // Knightmare- replaced by new dedicated console
 #ifndef NEW_DED_CONSOLE
-void Sys_Error (char *error, ...)
+void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
 	char		text[1024];

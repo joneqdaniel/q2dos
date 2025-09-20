@@ -1057,7 +1057,7 @@ varargs versions of all text functions.
 FIXME: make this buffer size safe someday
 ============
 */
-char	*va(char *format, ...)
+char	*va(const char *format, ...)
 {
 	va_list		argptr;
 	static char		string[1024];
@@ -1187,7 +1187,7 @@ void Com_PageInMemory (byte *buffer, int size)
 */
 
 // FIXME: replace all Q_stricmp with Q_strcasecmp
-int Q_stricmp (char *s1, char *s2)
+int Q_stricmp (const char *s1, const char *s2)
 {
 #if defined(_WIN32)
 	return _stricmp (s1, s2);
@@ -1198,7 +1198,7 @@ int Q_stricmp (char *s1, char *s2)
 #endif
 }
 
-int Q_strncasecmp (char *s1, char *s2, int n)
+int Q_strncasecmp (const char *s1, const char *s2, int n)
 {
 	int		c1, c2;
 
@@ -1224,13 +1224,13 @@ int Q_strncasecmp (char *s1, char *s2, int n)
 	return 0;		// strings are equal
 }
 
-int Q_strcasecmp (char *s1, char *s2)
+int Q_strcasecmp (const char *s1, const char *s2)
 {
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
 
-void Com_sprintf (char *dest, int size, char *fmt, ...)
+void Com_sprintf (char *dest, int size, const char *fmt, ...)
 {
 	int		len;
 	va_list		argptr;

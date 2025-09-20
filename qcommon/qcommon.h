@@ -639,7 +639,7 @@ void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int qport);
 qboolean Netchan_NeedReliable (netchan_t *chan);
 void Netchan_Transmit (netchan_t *chan, int length, byte *data);
 void Netchan_OutOfBand (int net_socket, netadr_t adr, int length, byte *data);
-void Netchan_OutOfBandPrint (int net_socket, netadr_t adr, char *format, ...) __attribute__((__format__(__printf__,3,4)));
+void Netchan_OutOfBandPrint (int net_socket, netadr_t adr, const char *format, ...) __attribute__((__format__(__printf__,3,4)));
 qboolean Netchan_Process (netchan_t *chan, sizebuf_t *msg);
 
 qboolean Netchan_CanReliable (netchan_t *chan);
@@ -786,9 +786,9 @@ MISC
 
 void		Com_BeginRedirect (int target, char *buffer, int buffersize, void (*flush));
 void		Com_EndRedirect (void);
-void 		Com_Printf (char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
-void 		Com_DPrintf (unsigned int developerFlags, char *fmt, ...) __attribute__((__format__(__printf__,2,3))); /* FS: Added developer flags */
-void 		Com_Error (int code, char *fmt, ...) __attribute__((__noreturn__, __format__(__printf__,2,3)));
+void 		Com_Printf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
+void 		Com_DPrintf (unsigned int developerFlags, const char *fmt, ...) __attribute__((__format__(__printf__,2,3))); /* FS: Added developer flags */
+void 		Com_Error (int code, const char *fmt, ...) __attribute__((__noreturn__, __format__(__printf__,2,3)));
 void 		Com_Quit (void) __attribute__((__noreturn__));
 
 int			Com_ServerState (void);		// this should have just been a cvar...
@@ -854,7 +854,7 @@ void	*Sys_GetGameAPI (void *parms);
 char	*Sys_ConsoleInput (void);
 void	Sys_ConsoleOutput (char *string);
 void	Sys_SendKeyEvents (void);
-void	Sys_Error (char *error, ...) __attribute__((__noreturn__, __format__(__printf__,1,2)));
+void	Sys_Error (const char *error, ...) __attribute__((__noreturn__, __format__(__printf__,1,2)));
 void	Sys_Quit (void) __attribute__((__noreturn__));
 char	*Sys_GetClipboardData( void );
 void	Sys_CopyProtect (void);

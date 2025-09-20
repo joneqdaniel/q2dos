@@ -241,7 +241,7 @@ static void Sys_SetTextMode (void) /* FS: This was used twice, let's make it a l
 	__dpmi_int(0x10, &r);
 }
 
-void Sys_Error (char *error, ...)
+void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
 

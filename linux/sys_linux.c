@@ -55,7 +55,7 @@ void Sys_ConsoleOutput (char *string)
 	fflush (stdout);
 }
 
-void Sys_Printf (char *fmt, ...)
+void Sys_Printf (const char *fmt, ...)
 {
 	va_list		argptr;
 	char		text[2048];
@@ -93,7 +93,7 @@ void Sys_Init(void)
 #define Sys_ErrorMessage(T)	do {} while (0)
 #endif
 
-void Sys_Error (char *error, ...)
+void Sys_Error (const char *error, ...)
 {
 	va_list argptr;
 	char string[2048];

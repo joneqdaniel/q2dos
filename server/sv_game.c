@@ -71,7 +71,7 @@ Debug print to server console
 ===============
 */
 void __attribute__((__format__(__printf__,2,3)))
-PF_dprintf (unsigned int developerFlags, char *fmt, ...)
+PF_dprintf (unsigned int developerFlags, const char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
@@ -105,7 +105,7 @@ Print to a single client
 ===============
 */
 void __attribute__((__format__(__printf__,3,4)))
-PF_cprintf (edict_t *ent, int level, char *fmt, ...)
+PF_cprintf (edict_t *ent, int level, const char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
@@ -144,7 +144,7 @@ centerprint to a single client
 ===============
 */
 void __attribute__((__format__(__printf__,2,3)))
-PF_centerprintf (edict_t *ent, char *fmt, ...)
+PF_centerprintf (edict_t *ent, const char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
@@ -175,7 +175,7 @@ Abort the server with a game error
 ===============
 */
 void __attribute__((__noreturn__, __format__(__printf__,1,2)))
-PF_error (char *fmt, ...)
+PF_error (const char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
