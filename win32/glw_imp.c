@@ -61,7 +61,7 @@ static int Get_MultiSample (void)
 	if (gl_multisample->intValue)
 	{
 		ri.Con_Printf (PRINT_ALL, "wglChoosePixelFormatARB");
-		qwglChoosePixelFormatARB = (BOOL (WINAPI *)(HDC, const int*, const float*, unsigned int, int*, unsigned int*)) qwglGetProcAddress("wglChoosePixelFormatARB");
+		qwglChoosePixelFormatARB = (BOOL (WINAPI *)(HDC,const int*,const FLOAT*,UINT,int*,UINT*)) qwglGetProcAddress("wglChoosePixelFormatARB");
 		if(qwglChoosePixelFormatARB)
 		{
 			int pixelFormat = 0;
