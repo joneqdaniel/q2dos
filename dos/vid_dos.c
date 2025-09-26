@@ -280,7 +280,7 @@ static qboolean VID_LoadRefresh (const char *name)
 		Com_Printf("dlopen(\"%s\") failed\n", name);
 		return false;
 	}
-	if ((GetRefAPI = (void *) Sys_dlsym(reflib_library, "_GetRefAPI")) == NULL)
+	if ((GetRefAPI = (GetRefAPI_t) Sys_dlsym(reflib_library, "_GetRefAPI")) == NULL)
 	{
 		Com_Error(ERR_FATAL, "dlsym() failed on %s\n", name);
 		return false;

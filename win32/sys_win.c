@@ -73,11 +73,11 @@ void Sys_Error (const char *error, ...)
 	Qcommon_Shutdown ();
 
 	va_start (argptr, error);
-	_vsnprintf (text, sizeof(text), error, argptr);
+	_vsnprintf(text, sizeof(text), error, argptr);
 	va_end (argptr);
 	text[sizeof(text)-1] = 0;
 
-	MessageBox(NULL, text, "Error", 0 /* MB_OK */ );
+	MessageBox(NULL, text, "Error", 0 /* MB_OK */);
 
 	exit (1);
 }
@@ -85,7 +85,7 @@ void Sys_Error (const char *error, ...)
 
 void Sys_Quit (void)
 {
-	timeEndPeriod( 1 );
+	timeEndPeriod(1);
 
 	CL_Shutdown();
 	Qcommon_Shutdown ();
@@ -121,7 +121,7 @@ void WinError (void)
 	);
 
 	// Display the string.
-	MessageBox( NULL, (const char *)lpMsgBuf, "GetLastError", MB_OK|MB_ICONINFORMATION );
+	MessageBox(NULL, (const char *)lpMsgBuf, "GetLastError", MB_OK|MB_ICONINFORMATION);
 
 	// Free the buffer.
 	LocalFree(lpMsgBuf);
@@ -172,7 +172,7 @@ char *Sys_ScanForCD (void)
 #endif
 
 	cddir[0] = 0;
-	
+
 	return NULL;
 }
 
@@ -398,7 +398,7 @@ char *Sys_GetClipboardData (void)
 		{
 			if ((cliptext = (char *)GlobalLock(hClipboardData)) != NULL)
 			{
-				data = malloc(GlobalSize(hClipboardData) + 1);
+				data = (char *)malloc(GlobalSize(hClipboardData) + 1);
 				if (!data)
 				{
 					Sys_Error("Sys_GetClipboardData:  Failed to allocate memory.\n");
@@ -413,6 +413,7 @@ char *Sys_GetClipboardData (void)
 	}
 	return data;
 }
+
 
 /*
 ==============================================================================
@@ -478,7 +479,6 @@ void *Sys_GetGameAPI (void *parms)
 	char	*path;
 	char	cwd[MAX_OSPATH];
 
-
 #if defined(_M_X64) || defined(_M_AMD64) || defined(__x86_64__)
 	const char *gamename = "gamex64.dll";
 	#ifdef NDEBUG
@@ -486,7 +486,6 @@ void *Sys_GetGameAPI (void *parms)
 	#else
 	const char *debugdir = "debugx64";
 	#endif
-
 #elif defined(_M_IX86) || defined(__i386__)
 	const char *gamename = "gamex86.dll";
 	#ifdef NDEBUG
@@ -494,7 +493,6 @@ void *Sys_GetGameAPI (void *parms)
 	#else
 	const char *debugdir = "debug";
 	#endif
-
 #elif defined _M_ALPHA
 	const char *gamename = "gameaxp.dll";
 	#ifdef NDEBUG
@@ -502,7 +500,6 @@ void *Sys_GetGameAPI (void *parms)
 	#else
 	const char *debugdir = "debugaxp";
 	#endif
-
 #endif
 
 	if (game_library)
@@ -545,7 +542,7 @@ void *Sys_GetGameAPI (void *parms)
 		}
 	}
 
-	GetGameAPI = (void *)GetProcAddress (game_library, "GetGameAPI");
+	GetGameAPI = (void* (*)(void*))GetProcAddress (game_library, "GetGameAPI");
 	if (!GetGameAPI)
 	{
 		Sys_UnloadGame ();
@@ -771,8 +768,10 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 		if (i == argc)
 		{
-			argv[argc++] = "+set";
-			argv[argc++] = "cddir";
+			static char arg_set[] = "+set";
+			static char arg_cddir[] = "cddir";
+			argv[argc++] = arg_set;
+			argv[argc++] = arg_cddir;
 			argv[argc++] = cddir;
 		}
 	}
@@ -816,11 +815,11 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 
 	// never gets here
-    return TRUE;
+	return TRUE;
 }
 
+//===============================================================================
 #ifdef GAMESPY
-
 #ifndef GAMESPY_HARD_LINKED /* dynamic linking */
 static HINSTANCE	gamespy_library;
 #else
@@ -860,5 +859,4 @@ void Sys_UnloadGameSpy(void)
 	gamespy_library = NULL;
 #endif
 }
-
 #endif /* GAMESPY ... */

@@ -146,7 +146,7 @@ static qboolean SWimp_InitGraphics(qboolean fullscreen)
 	SDL_ShowCursor(0);
 
 	vid.rowbytes = surface->pitch;
-	vid.buffer = surface->pixels;
+	vid.buffer = (pixel_t *) surface->pixels;
 
 	rw_active = true;
 

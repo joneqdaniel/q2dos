@@ -29,6 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ** SWimp_SetPalette
 ** SWimp_Shutdown
 */
+
+#define CINTERFACE  /* for ddraw.h */
+
 #include "../ref_soft/r_local.h"
 #include "rw_win.h"
 #include "winquake.h"
@@ -99,7 +102,7 @@ void VID_CreateWindow( int width, int height, unsigned long stylebits )
 
 	if (!sww_state.hWnd)
 		ri.Sys_Error (ERR_FATAL, "Couldn't create window");
-	
+
 	ShowWindow( sww_state.hWnd, SW_SHOWNORMAL );
 	UpdateWindow( sww_state.hWnd );
 	SetForegroundWindow( sww_state.hWnd );
@@ -183,7 +186,6 @@ void SWimp_EndFrame (void)
 //			RealizePalette(hdcScreen);
 		}
 
-	    
 		BitBlt( sww_state.hDC,
 			    0, 0,
 				vid.width,
@@ -214,15 +216,15 @@ void SWimp_EndFrame (void)
 		{
 			if ( ( rval = sww_state.lpddsBackBuffer->lpVtbl->BltFast( sww_state.lpddsBackBuffer,
 																	0, 0,
-																	sww_state.lpddsOffScreenBuffer, 
-																	&r, 
+																	sww_state.lpddsOffScreenBuffer,
+																	&r,
 																	DDBLTFAST_WAIT ) ) == DDERR_SURFACELOST )
 			{
 				sww_state.lpddsBackBuffer->lpVtbl->Restore( sww_state.lpddsBackBuffer );
 				sww_state.lpddsBackBuffer->lpVtbl->BltFast( sww_state.lpddsBackBuffer,
 															0, 0,
-															sww_state.lpddsOffScreenBuffer, 
-															&r, 
+															sww_state.lpddsOffScreenBuffer,
+															&r,
 															DDBLTFAST_WAIT );
 			}
 
@@ -237,15 +239,15 @@ void SWimp_EndFrame (void)
 		{
 			if ( ( rval = sww_state.lpddsBackBuffer->lpVtbl->BltFast( sww_state.lpddsFrontBuffer,
 																	0, 0,
-																	sww_state.lpddsOffScreenBuffer, 
-																	&r, 
+																	sww_state.lpddsOffScreenBuffer,
+																	&r,
 																	DDBLTFAST_WAIT ) ) == DDERR_SURFACELOST )
 			{
 				sww_state.lpddsBackBuffer->lpVtbl->Restore( sww_state.lpddsFrontBuffer );
 				sww_state.lpddsBackBuffer->lpVtbl->BltFast( sww_state.lpddsFrontBuffer,
 															0, 0,
-															sww_state.lpddsOffScreenBuffer, 
-															&r, 
+															sww_state.lpddsOffScreenBuffer,
+															&r,
 															DDBLTFAST_WAIT );
 			}
 		}
@@ -255,7 +257,7 @@ void SWimp_EndFrame (void)
 
 		sww_state.lpddsOffScreenBuffer->lpVtbl->Lock( sww_state.lpddsOffScreenBuffer, NULL, &ddsd, DDLOCK_WAIT, NULL );
 
-		vid.buffer = ddsd.lpSurface;
+		vid.buffer = (pixel_t *) ddsd.lpSurface;
 		vid.rowbytes = ddsd.lPitch;
 	}
 }
@@ -440,8 +442,14 @@ void Sys_SetFPCW (void)
 {
 }
 #elif defined(_MSC_VER)
+#ifdef __cplusplus
+extern "C" {
+#endif
 unsigned fpu_ceil_cw, fpu_chop_cw, fpu_full_cw, fpu_cw, fpu_pushed_cw;
 unsigned fpu_sp24_cw, fpu_sp24_ceil_cw;
+#ifdef __cplusplus
+}
+#endif
 
 void Sys_SetFPCW( void )
 {
@@ -466,7 +474,7 @@ void Sys_SetFPCW( void )
 	__asm mov fpu_sp24_cw, eax
 
 	__asm and ah, 0f0h          ; ceil mode, 24-bit single precision
-	__asm or  ah, 008h          ; 
+	__asm or  ah, 008h          ;
 	__asm mov fpu_sp24_ceil_cw, eax
 }
 

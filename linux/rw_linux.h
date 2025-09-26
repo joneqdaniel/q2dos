@@ -18,6 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void (*Key_Event_fp_t)(int key, qboolean down);
 
 extern void (*KBD_Update_fp)(void);
@@ -41,3 +45,22 @@ typedef struct in_state {
 	int *in_strafe_state;
 	int *in_speed_state;
 } in_state_t;
+
+void RW_IN_Commands (void);
+void RW_IN_Frame (void);
+void RW_IN_Init(in_state_t *);
+void RW_IN_Move (usercmd_t *);
+void RW_IN_Shutdown(void);
+void RW_KBD_Close(void);
+void RW_KBD_Init(Key_Event_fp_t);
+void RW_KBD_Update(void);
+
+char *RW_Sys_GetClipboardData(void);
+
+#ifdef REF_HARD_LINKED
+extern refexport_t GetRefAPI(refimport_t);
+#endif
+
+#ifdef __cplusplus
+}
+#endif

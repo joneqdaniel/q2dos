@@ -115,7 +115,7 @@ static int CDAudio_GetAudioDiskInfo(void)
 void CDAudio_Play2(int track, qboolean looping)
 {
 	DWORD				dwReturn;
-    MCI_PLAY_PARMS		mciPlayParms;
+	MCI_PLAY_PARMS		mciPlayParms;
 	MCI_STATUS_PARMS	mciStatusParms;
 
 	if (!enabled)

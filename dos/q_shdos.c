@@ -98,7 +98,7 @@ int	Sys_DOSTime (void) /* FS: DOS needs this for random qport */
 		secbase = tp.tv_sec;
 		return tp.tv_usec/1000;
 	}
-	return (tp.tv_sec - secbase)*1000 + tp.tv_usec/1000;
+	return (tp.tv_sec - secbase) * 1000 + tp.tv_usec / 1000;
 }
 
 void	Sys_Mkdir (char *path)

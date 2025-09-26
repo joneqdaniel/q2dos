@@ -33,7 +33,7 @@ refexport_t	re;
 cvar_t *win_noalttab;
 
 #ifndef WM_MOUSEWHEEL
-#define WM_MOUSEWHEEL (WM_MOUSELAST+1)  // message that will be supported by the OS 
+#define WM_MOUSEWHEEL (WM_MOUSELAST+1)  // message that will be supported by the OS
 #endif
 
 static UINT MSH_MOUSEWHEEL;
@@ -53,15 +53,15 @@ viddef_t	viddef;				// global video state; used by other modules
 #ifdef REF_HARD_LINKED
 refexport_t GetRefAPI (refimport_t rimp);
 #else
-HINSTANCE	reflib_library;		// Handle to refresh DLL 
+HINSTANCE	reflib_library;		// Handle to refresh DLL
 #endif
 qboolean	reflib_active = 0;
 
-HWND        cl_hwnd;            // Main window handle for life of program
+HWND		cl_hwnd;		// Main window handle for life of program
 
-#define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
+#define VID_NUM_MODES (sizeof(vid_modes) / sizeof(vid_modes[0]))
 
-LRESULT WINAPI MainWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+LRESULT WINAPI MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 static qboolean s_alttab_disabled;
 
@@ -299,7 +299,7 @@ LRESULT WINAPI MainWndProc (
 {
 	if ( uMsg == MSH_MOUSEWHEEL )
 	{
-		if ( ( ( int ) wParam ) > 0 )
+		if (((int) wParam) > 0)
 		{
 			Key_Event( K_MWHEELUP, true, sys_msg_time );
 			Key_Event( K_MWHEELUP, false, sys_msg_time );
@@ -309,7 +309,7 @@ LRESULT WINAPI MainWndProc (
 			Key_Event( K_MWHEELDOWN, true, sys_msg_time );
 			Key_Event( K_MWHEELDOWN, false, sys_msg_time );
 		}
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 	}
 
 	switch (uMsg)
@@ -337,16 +337,16 @@ LRESULT WINAPI MainWndProc (
 	case WM_CREATE:
 		cl_hwnd = hWnd;
 		MSH_MOUSEWHEEL = RegisterWindowMessage("MSWHEEL_ROLLMSG"); 
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
 	case WM_PAINT:
 		SCR_DirtyScreen ();	// force entire screen to update next frame
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
 	case WM_DESTROY:
 		// let sound and input know about this?
 		cl_hwnd = NULL;
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
 	case WM_ACTIVATE:
 		{
@@ -361,7 +361,7 @@ LRESULT WINAPI MainWndProc (
 			if ( reflib_active )
 				re.AppActivate( !( fActive == WA_INACTIVE ) );
 		}
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
 	case WM_MOVE:
 		{
@@ -390,7 +390,7 @@ LRESULT WINAPI MainWndProc (
 					IN_Activate (true);
 			}
 		}
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 
 // this is complicated because Win32 seems to pack multiple mouse events into
 // one update sometimes, so we always check all states and look for events
@@ -417,7 +417,7 @@ LRESULT WINAPI MainWndProc (
 	case WM_SYSCOMMAND:
 		if ( wParam == SC_SCREENSAVE )
 			return 0;
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
 	case WM_SYSKEYDOWN:
 		if ( wParam == 13 )
 		{
@@ -447,11 +447,11 @@ LRESULT WINAPI MainWndProc (
 		break;
 
 	default:	// pass all unhandled messages to DefWindowProc
-        return DefWindowProc (hWnd, uMsg, wParam, lParam);
-    }
+		return DefWindowProc (hWnd, uMsg, wParam, lParam);
+	}
 
-    /* return 0 if handled message, 1 if not */
-    return DefWindowProc( hWnd, uMsg, wParam, lParam );
+	/* return 0 if handled message, 1 if not */
+	return DefWindowProc( hWnd, uMsg, wParam, lParam );
 }
 
 void VID_Minimize_f (void) /* FS: By request. */
@@ -580,7 +580,7 @@ qboolean VID_LoadRefresh( char *name )
 #ifndef REF_HARD_LINKED
 	GetRefAPI_t	GetRefAPI;
 #endif
-	
+
 	if ( reflib_active )
 	{
 		re.Shutdown();
@@ -659,7 +659,7 @@ qboolean VID_LoadRefresh( char *name )
 VID_CheckChanges
 
 This function gets called once just before drawing each frame, and it's sole purpose in life
-is to check to see if any of the video mode parameters have changed, and if they have to 
+is to check to see if any of the video mode parameters have changed, and if they have to
 update the rendering DLL and/or video mode to match.
 ============
 */

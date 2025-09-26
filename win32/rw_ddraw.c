@@ -22,9 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 **
 ** This handles DirecTDraw management under Windows.
 */
-#ifndef _WIN32
-#  error You should not be compiling this file on this platform
-#endif
+
+#define CINTERFACE  /* for ddraw.h */
 
 #include <float.h>
 
@@ -52,10 +51,9 @@ qboolean DDRAW_Init( unsigned char **ppbuffer, int *ppitch )
 
 	ri.Con_Printf( PRINT_ALL, "Initializing DirectDraw\n");
 
-
 	for ( i = 0; i < 256; i++ )
 	{
-		palentries[i].peRed		= ( d_8to24table[i] >> 0  ) & 0xff;
+		palentries[i].peRed	= ( d_8to24table[i] >> 0  ) & 0xff;
 		palentries[i].peGreen	= ( d_8to24table[i] >> 8  ) & 0xff;
 		palentries[i].peBlue	= ( d_8to24table[i] >> 16 ) & 0xff;
 	}
@@ -97,7 +95,7 @@ qboolean DDRAW_Init( unsigned char **ppbuffer, int *ppitch )
 	sww_state.modex = false;
 
 	ri.Con_Printf( PRINT_ALL, "...setting exclusive mode: ");
-	if ( ( ddrval = sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw, 
+	if ( ( ddrval = sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw,
 																		 sww_state.hWnd,
 																		 DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN ) ) != DD_OK )
 	{
@@ -126,14 +124,14 @@ qboolean DDRAW_Init( unsigned char **ppbuffer, int *ppitch )
 		/*
 		** reset to normal cooperative level
 		*/
-		sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw, 
+		sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw,
 															 sww_state.hWnd,
 															 DDSCL_NORMAL );
 
 		/*
 		** set exclusive mode
 		*/
-		if ( ( ddrval = sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw, 
+		if ( ( ddrval = sww_state.lpDirectDraw->lpVtbl->SetCooperativeLevel( sww_state.lpDirectDraw,
 																			 sww_state.hWnd,
 																			 DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN | DDSCL_NOWINDOWCHANGES | DDSCL_ALLOWMODEX ) ) != DD_OK )
 		{
@@ -254,7 +252,7 @@ qboolean DDRAW_Init( unsigned char **ppbuffer, int *ppitch )
 	}
 	ri.Con_Printf( PRINT_ALL, "ok\n" );
 
-	*ppbuffer = ddsd.lpSurface;
+	*ppbuffer = (unsigned char *) ddsd.lpSurface;
 	*ppitch   = ddsd.lPitch;
 
 	for ( i = 0; i < vid.height; i++ )
@@ -265,6 +263,7 @@ qboolean DDRAW_Init( unsigned char **ppbuffer, int *ppitch )
 	sww_state.palettized = true;
 
 	return true;
+
 fail:
 	ri.Con_Printf( PRINT_ALL, "*** DDraw init failure ***\n" );
 
@@ -553,4 +552,3 @@ static const char *DDrawError (int code)
             return "UNKNOWN\0";
 	}
 }
-

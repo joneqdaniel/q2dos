@@ -307,7 +307,7 @@ void IN_MouseMove (usercmd_t *cmd)
 	mouse_x *= sensitivity->value;
 	mouse_y *= sensitivity->value;
 
-// add mouse X/Y movement to cmd
+	// add mouse X/Y movement to cmd
 	if ( (in_strafe.state & 1) || (lookstrafe->value && mlooking ))
 		cmd->sidemove += m_side->value * mouse_x;
 	else
@@ -430,9 +430,7 @@ void IN_Frame (void)
 		return;
 	}
 
-	if ( !cl.refresh_prepped
-		|| cls.key_dest == key_console
-		|| cls.key_dest == key_menu)
+	if (!cl.refresh_prepped || cls.key_dest == key_console || cls.key_dest == key_menu)
 	{
 		// temporarily deactivate if in fullscreen
 		if (Cvar_VariableValue ("vid_fullscreen") == 0)
@@ -485,7 +483,7 @@ JOYSTICK
 IN_StartupJoystick
 ===============
 */
-void IN_StartupJoystick (void) 
+void IN_StartupJoystick (void)
 {
 	UINT			numdevs;
 	JOYCAPS		jc;
@@ -530,7 +528,7 @@ void IN_StartupJoystick (void)
 	memset (&jc, 0, sizeof(jc));
 	if ((mmr = joyGetDevCaps (joy_id, &jc, sizeof(jc))) != JOYERR_NOERROR)
 	{
-		Com_Printf ("\njoystick not found -- invalid joystick capabilities (%x)\n\n", mmr); 
+		Com_Printf ("\njoystick not found -- invalid joystick capabilities (%x)\n\n", mmr);
 		return;
 	}
 
@@ -547,7 +545,7 @@ void IN_StartupJoystick (void)
 	joy_avail = true;
 	joy_advancedinit = false;
 
-	Com_Printf ("\njoystick detected\n\n"); 
+	Com_Printf ("\njoystick detected\n\n");
 }
 
 
@@ -765,9 +763,9 @@ void IN_JoyMove (usercmd_t *cmd)
 	// verify joystick is available and that the user wants to use it
 	if (!joy_avail || !in_joystick->value)
 	{
-		return; 
+		return;
 	}
- 
+
 	// collect the joystick data, if possible
 	if (!IN_ReadJoystick())
 	{
@@ -788,7 +786,7 @@ void IN_JoyMove (usercmd_t *cmd)
 		// move centerpoint to zero
 		fAxisValue -= 32768.0;
 
-		// convert range from -32768..32767 to -1..1 
+		// convert range from -32768..32767 to -1..1
 		fAxisValue /= 32768.0;
 
 		switch (dwAxisMap[i])
@@ -798,7 +796,7 @@ void IN_JoyMove (usercmd_t *cmd)
 			{
 				// user wants forward control to become look control
 				if (fabs(fAxisValue) > joy_pitchthreshold->value)
-				{		
+				{
 					// if mouse invert is on, invert the joystick pitch value
 					// only absolute control support here (joy_advanced is false)
 					if (m_pitch->value < 0.0)

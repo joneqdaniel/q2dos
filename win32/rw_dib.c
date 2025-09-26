@@ -32,26 +32,26 @@ static HGDIOBJ previously_selected_GDI_obj;
 
 static int s_syspalindices[] =
 {
-  COLOR_ACTIVEBORDER,
-  COLOR_ACTIVECAPTION,
-  COLOR_APPWORKSPACE,
-  COLOR_BACKGROUND,
-  COLOR_BTNFACE,
-  COLOR_BTNSHADOW,
-  COLOR_BTNTEXT,
-  COLOR_CAPTIONTEXT,
-  COLOR_GRAYTEXT,
-  COLOR_HIGHLIGHT,
-  COLOR_HIGHLIGHTTEXT,
-  COLOR_INACTIVEBORDER,
+	COLOR_ACTIVEBORDER,
+	COLOR_ACTIVECAPTION,
+	COLOR_APPWORKSPACE,
+	COLOR_BACKGROUND,
+	COLOR_BTNFACE,
+	COLOR_BTNSHADOW,
+	COLOR_BTNTEXT,
+	COLOR_CAPTIONTEXT,
+	COLOR_GRAYTEXT,
+	COLOR_HIGHLIGHT,
+	COLOR_HIGHLIGHTTEXT,
+	COLOR_INACTIVEBORDER,
 
-  COLOR_INACTIVECAPTION,
-  COLOR_MENU,
-  COLOR_MENUTEXT,
-  COLOR_SCROLLBAR,
-  COLOR_WINDOW,
-  COLOR_WINDOWFRAME,
-  COLOR_WINDOWTEXT
+	COLOR_INACTIVECAPTION,
+	COLOR_MENU,
+	COLOR_MENUTEXT,
+	COLOR_SCROLLBAR,
+	COLOR_WINDOW,
+	COLOR_WINDOWFRAME,
+	COLOR_WINDOWTEXT
 };
 
 #define NUM_SYS_COLORS (int)(sizeof(s_syspalindices) / sizeof(int))
@@ -146,7 +146,7 @@ qboolean DIB_Init( unsigned char **ppbuffer, int *ppitch )
 	** create the DIB section
 	*/
 	sww_state.hDIBSection = CreateDIBSection( sww_state.hDC,
-											 pbmiDIB,
+						  pbmiDIB,
 											 DIB_RGB_COLORS,
 											 &sww_state.pDIBBase,
 											 NULL,
@@ -357,8 +357,8 @@ void DIB_Shutdown( void )
 */
 static void DIB_RestoreSystemColors( void )
 {
-    SetSystemPaletteUse( sww_state.hDC, SYSPAL_STATIC );
-    SetSysColors( NUM_SYS_COLORS, s_syspalindices, s_oldsyscolors );
+	SetSystemPaletteUse( sww_state.hDC, SYSPAL_STATIC );
+	SetSysColors( NUM_SYS_COLORS, s_syspalindices, s_oldsyscolors );
 }
 
 static void DIB_SaveSystemColors( void )

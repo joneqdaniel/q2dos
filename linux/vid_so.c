@@ -45,9 +45,6 @@ viddef_t	viddef;				// global video state; used by other modules
 
 void		*reflib_library;		// Handle to refresh DLL
 qboolean	reflib_active = 0;
-#ifdef REF_HARD_LINKED
-extern refexport_t GetRefAPI(refimport_t);
-#endif
 
 /** KEYBOARD **************************************************************/
 
@@ -56,11 +53,6 @@ void Do_Key_Event(int key, qboolean down);
 void (*KBD_Update_fp)(void);
 void (*KBD_Init_fp)(Key_Event_fp_t fp);
 void (*KBD_Close_fp)(void);
-#ifdef REF_HARD_LINKED
-extern void RW_KBD_Update(void);
-extern void RW_KBD_Init(Key_Event_fp_t);
-extern void RW_KBD_Close(void);
-#endif
 
 /** MOUSE *****************************************************************/
 
@@ -72,14 +64,6 @@ void (*RW_IN_Activate_fp)(qboolean active);
 void (*RW_IN_Commands_fp)(void);
 void (*RW_IN_Move_fp)(usercmd_t *cmd);
 void (*RW_IN_Frame_fp)(void);
-#ifdef REF_HARD_LINKED
-extern void RW_IN_Init(in_state_t *);
-extern void RW_IN_Shutdown(void);
-extern void RW_IN_Activate(qboolean);
-extern void RW_IN_Frame(void);
-extern void RW_IN_Move(usercmd_t *);
-extern void RW_IN_Commands(void);
-#endif
 
 void Real_IN_Init (void);
 
@@ -293,7 +277,7 @@ qboolean VID_LoadRefresh (const char *name)
 	ri.Vid_NewWindow = VID_NewWindow;
 
 #ifndef REF_HARD_LINKED
-	if (!(GetRefAPI = (void *) dlsym(reflib_library, "GetRefAPI")))
+	if (!(GetRefAPI = (GetRefAPI_t) dlsym(reflib_library, "GetRefAPI")))
 		Com_Error(ERR_FATAL, "dlsym failed on %s", name);
 #endif
 
@@ -313,14 +297,14 @@ qboolean VID_LoadRefresh (const char *name)
 	in_state.in_speed_state = &in_speed.state;
 
 #ifndef REF_HARD_LINKED
-	RW_IN_Init_fp = dlsym(reflib_library, "RW_IN_Init");
-	RW_IN_Shutdown_fp = dlsym(reflib_library, "RW_IN_Shutdown");
-	RW_IN_Activate_fp = dlsym(reflib_library, "RW_IN_Activate");
-	RW_IN_Commands_fp = dlsym(reflib_library, "RW_IN_Commands");
-	RW_IN_Move_fp = dlsym(reflib_library, "RW_IN_Move");
-	RW_IN_Frame_fp = dlsym(reflib_library, "RW_IN_Frame");
+	RW_IN_Init_fp = (void (*)(in_state_t*)) dlsym(reflib_library, "RW_IN_Init");
+	RW_IN_Shutdown_fp = (void (*)(void)) dlsym(reflib_library, "RW_IN_Shutdown");
+	RW_IN_Activate_fp = (void (*)(qboolean)) dlsym(reflib_library, "RW_IN_Activate");
+	RW_IN_Commands_fp = (void (*)(void)) dlsym(reflib_library, "RW_IN_Commands");
+	RW_IN_Move_fp = (void (*)(usercmd_t*)) dlsym(reflib_library, "RW_IN_Move");
+	RW_IN_Frame_fp = (void (*)(void)) dlsym(reflib_library, "RW_IN_Frame");
 	/* this one is optional */
-	RW_Sys_GetClipboardData_fp = dlsym(reflib_library, "RW_Sys_GetClipboardData");
+	RW_Sys_GetClipboardData_fp = (char* (*)(void)) dlsym(reflib_library, "RW_Sys_GetClipboardData");
 	if (!RW_IN_Init_fp || !RW_IN_Shutdown_fp || !RW_IN_Activate_fp || !RW_IN_Commands_fp || !RW_IN_Move_fp || !RW_IN_Frame_fp)
 		Sys_Error("No RW_IN functions in REF.\n");
 #else
@@ -344,9 +328,9 @@ qboolean VID_LoadRefresh (const char *name)
 
 	/* Init KBD */
 #ifndef REF_HARD_LINKED
-	KBD_Init_fp = dlsym(reflib_library, "RW_KBD_Init");
-	KBD_Update_fp = dlsym(reflib_library, "RW_KBD_Update");
-	KBD_Close_fp = dlsym(reflib_library, "RW_KBD_Close");
+	KBD_Init_fp = (void (*)(Key_Event_fp_t)) dlsym(reflib_library, "RW_KBD_Init");
+	KBD_Update_fp = (void (*)(void)) dlsym(reflib_library, "RW_KBD_Update");
+	KBD_Close_fp  = (void (*)(void)) dlsym(reflib_library, "RW_KBD_Close" );
 	if (!KBD_Init_fp || !KBD_Update_fp || !KBD_Close_fp)
 		Sys_Error("No KBD functions in REF.\n");
 #else
