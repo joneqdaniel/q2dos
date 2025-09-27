@@ -1237,7 +1237,7 @@ void CL_ResetPrecacheCheck (void)
 
 	precache_check = CS_MODELS;
 //	precache_spawncount = atoi(Cmd_Argv(1));
-	precache_model = 0;
+	precache_model = NULL;
 	precache_model_skin = 0;
 	precache_pak = 0;	// Knightmare added
 }
@@ -1304,7 +1304,7 @@ void CL_RequestNextDownload (void)
 						if (LittleLong(*(unsigned *)precache_model) != IDSPRITEHEADER)
 						{	// not a recognized model
 							FS_FreeFile(precache_model);
-							precache_model = 0;
+							precache_model = NULL;
 							precache_model_skin = 0;
 							precache_check++;
 							continue;
@@ -1315,7 +1315,7 @@ void CL_RequestNextDownload (void)
 							if (LittleLong (spriteheader->version != SPRITE_VERSION))
 							{	// not a recognized sprite
 								FS_FreeFile(precache_model);
-								precache_model = 0;
+								precache_model = NULL;
 								precache_check++;
 								precache_model_skin = 0;
 								continue; // couldn't load it
@@ -1328,16 +1328,16 @@ void CL_RequestNextDownload (void)
 						if (LittleLong (pheader->version) != ALIAS_VERSION)
 						{	// not a recognized md2
 							FS_FreeFile(precache_model);
-							precache_model = 0;
-						precache_check++;
-						precache_model_skin = 0;
-						continue; // couldn't load it
+							precache_model = NULL;
+							precache_check++;
+							precache_model_skin = 0;
+							continue; // couldn't load it
 						}
 					}
 				/*	if (LittleLong(*(unsigned *)precache_model) != IDALIASHEADER)
 					{	// not an alias model
 						FS_FreeFile(precache_model);
-						precache_model = 0;
+						precache_model = NULL;
 						precache_model_skin = 0;
 						precache_check++;
 						continue;
@@ -1392,9 +1392,9 @@ void CL_RequestNextDownload (void)
 					}
 				}
 
-				if (precache_model) { 
+				if (precache_model) {
 					FS_FreeFile(precache_model);
-					precache_model = 0;
+					precache_model = NULL;
 				}
 				precache_model_skin = 0;
 				precache_check++;
@@ -1615,7 +1615,7 @@ void CL_Precache_f (void)
 
 	precache_check = CS_MODELS;
 	precache_spawncount = atoi(Cmd_Argv(1));
-	precache_model = 0;
+	precache_model = NULL;
 	precache_model_skin = 0;
 	precache_pak = 0;	// Knightmare added
 

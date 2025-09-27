@@ -436,7 +436,7 @@ void Sys_InitDedConsole (void)
 	hDC = GetDC(0);
 	w = GetDeviceCaps(hDC, HORZRES);
 	h = GetDeviceCaps(hDC, VERTRES);
-	ReleaseDC(0, hDC);
+	ReleaseDC(NULL, hDC);
 	
 	r.left = (w - 540) / 2;
 	r.top = (h - 455) / 2; 

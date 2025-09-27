@@ -113,7 +113,7 @@ static char *type_extensions[] =
 	"txt",
 	"def",
 	"alias",
-	0
+	NULL
 };
 
 /*
@@ -1268,7 +1268,7 @@ char **FS_ListPak (char *find, int *num)
 	pack_t			*pak;
 
 	int nfiles = 0, nfound = 0;
-	char **list = 0;
+	char **list = NULL;
 	int i;
 
 	// now check pak files
@@ -1330,7 +1330,7 @@ void FS_FreeFileList (char **list, int n)
 		if (list && list[i])
 		{
 			free(list[i]);
-			list[i] = 0;
+			list[i] = NULL;
 		}
 	}
 	free(list);

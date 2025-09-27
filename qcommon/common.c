@@ -1559,7 +1559,7 @@ void Qcommon_Frame (int msec)
 			if ( log_stats_file )
 			{
 				fclose( log_stats_file );
-				log_stats_file = 0;
+				log_stats_file = NULL;
 			}
 
 			log_stats_file = fopen( "stats.log", "w" );
@@ -1574,7 +1574,7 @@ void Qcommon_Frame (int msec)
 			if ( log_stats_file )
 			{
 				fclose( log_stats_file );
-				log_stats_file = 0;
+				log_stats_file = NULL;
 			}
 		}
 	}

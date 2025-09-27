@@ -1266,7 +1266,7 @@ void Pmove (pmove_t *pmove)
 	pm->numtouch = 0;
 	VectorClear (pm->viewangles);
 	pm->viewheight = 0;
-	pm->groundentity = 0;
+	pm->groundentity = NULL;
 	pm->watertype = 0;
 	pm->waterlevel = 0;
 

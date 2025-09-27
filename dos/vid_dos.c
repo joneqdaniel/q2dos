@@ -463,14 +463,14 @@ void	VID_MenuInit (void)
 	{
 		"[software      ]",
 		"[3Dfx OpenGL   ]",
-		0
+		NULL
 	};
 
 	static const char *filter_names[] =
 	{
 		"bilinear",
 		"trilinear",
-		0
+		NULL
 	};
 
 	int		i;

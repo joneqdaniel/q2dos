@@ -1031,10 +1031,10 @@ void R_SetLightLevel (void)
 }
 
 /*
-@@@@@@@@@@@@@@@@@@@@@
+====================
 R_RenderFrame
 
-@@@@@@@@@@@@@@@@@@@@@
+====================
 */
 void R_RenderFrame (refdef_t *fd)
 {
@@ -1953,10 +1953,9 @@ void	Draw_Fill (int x, int y, int w, int h, int c);
 void	Draw_FadeScreen (void);
 
 /*
-@@@@@@@@@@@@@@@@@@@@@
+=============
 GetRefAPI
-
-@@@@@@@@@@@@@@@@@@@@@
+=============
 */
 refexport_t GetRefAPI (refimport_t rimp )
 {

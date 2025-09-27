@@ -271,7 +271,7 @@ void R_DrawTriangleOutlines (msurface_t *surf, qboolean multitexture, qboolean a
 	{
 		msurface_t *surf;
 
-		for ( surf = gl_lms.lightmap_surfaces[i]; surf != 0; surf = surf->lightmapchain )
+		for ( surf = gl_lms.lightmap_surfaces[i]; surf != NULL; surf = surf->lightmapchain )
 		{
 			p = surf->polys;
 			for ( ; p ; p=p->chain)
@@ -302,7 +302,7 @@ void R_DrawTriangleOutlines (msurface_t *surf, qboolean multitexture, qboolean a
         
         for (i = 0; i < MAX_LIGHTMAPS; i++)
         {
-            for (surf = gl_lms.lightmap_surfaces[i]; surf != 0; surf = surf->lightmapchain)
+            for (surf = gl_lms.lightmap_surfaces[i]; surf != NULL; surf = surf->lightmapchain)
             {
                 for (p = surf->polys; p; p = p->chain)
                 {
@@ -384,7 +384,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 {
 	if ( soffset == 0 && toffset == 0 )
 	{
-		for ( ; p != 0; p = p->chain )
+		for ( ; p != NULL; p = p->chain )
 		{
 			float *v;
 			int j;
@@ -401,7 +401,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 	}
 	else
 	{
-		for ( ; p != 0; p = p->chain )
+		for ( ; p != NULL; p = p->chain )
 		{
 			float *v;
 			int j;
@@ -427,7 +427,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 void R_BlendLightmaps (void)
 {
 	int			i;
-	msurface_t	*surf, *newdrawsurf = 0;
+	msurface_t	*surf, *newdrawsurf = NULL;
 
 	// don't bother if we're set to fullbright
 	if (r_fullbright->intValue)
@@ -487,7 +487,7 @@ void R_BlendLightmaps (void)
 				c_visible_lightmaps++;
 			GL_Bind( gl_state.lightmap_textures + i);
 
-			for ( surf = gl_lms.lightmap_surfaces[i]; surf != 0; surf = surf->lightmapchain )
+			for ( surf = gl_lms.lightmap_surfaces[i]; surf != NULL; surf = surf->lightmapchain )
 			{
 				if ( surf->polys )
 					DrawGLPolyChain( surf->polys, 0, 0 );
@@ -509,7 +509,7 @@ void R_BlendLightmaps (void)
 
 		newdrawsurf = gl_lms.lightmap_surfaces[0];
 
-		for ( surf = gl_lms.lightmap_surfaces[0]; surf != 0; surf = surf->lightmapchain )
+		for ( surf = gl_lms.lightmap_surfaces[0]; surf != NULL; surf = surf->lightmapchain )
 		{
 			int			smax, tmax;
 			unsigned	*base;
@@ -564,7 +564,7 @@ void R_BlendLightmaps (void)
 		if ( newdrawsurf )
 			LM_UploadBlock( true );
 
-		for ( surf = newdrawsurf; surf != 0; surf = surf->lightmapchain )
+		for ( surf = newdrawsurf; surf != NULL; surf = surf->lightmapchain )
 		{
 			if ( surf->polys )
 				DrawGLPolyChain( surf->polys, ( surf->light_s - surf->dlight_s ) * ( 1.0 / 128.0 ), ( surf->light_t - surf->dlight_t ) * ( 1.0 / 128.0 ) );

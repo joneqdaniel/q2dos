@@ -89,8 +89,8 @@ static void WIN_DisableAltTab( void )
 	}
 	else
 	{
-		RegisterHotKey( 0, 0, MOD_ALT, VK_TAB );
-		RegisterHotKey( 0, 1, MOD_ALT, VK_RETURN );
+		RegisterHotKey( NULL, 0, MOD_ALT, VK_TAB );
+		RegisterHotKey( NULL, 1, MOD_ALT, VK_RETURN );
 	}
 	s_alttab_disabled = true;
 }
@@ -107,8 +107,8 @@ static void WIN_EnableAltTab( void )
 		}
 		else
 		{
-			UnregisterHotKey( 0, 0 );
-			UnregisterHotKey( 0, 1 );
+			UnregisterHotKey( NULL, 0 );
+			UnregisterHotKey( NULL, 1 );
 		}
 
 		s_alttab_disabled = false;

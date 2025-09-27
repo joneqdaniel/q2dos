@@ -291,7 +291,7 @@ void Menu_AdjustCursor( menuframework_s *m, int dir )
 	*/
 	if ( m->cursor >= 0 && m->cursor < m->nitems )
 	{
-		if ( ( citem = Menu_ItemAtCursor( m ) ) != 0 )
+		if ( (citem = Menu_ItemAtCursor(m)) != NULL )
 		{
 			if ( citem->type != MTYPE_SEPARATOR )
 				return;
@@ -483,7 +483,7 @@ void Menu_DrawStringR2LDark( int x, int y, const char *string )
 void *Menu_ItemAtCursor( menuframework_s *m )
 {
 	if ( m->cursor < 0 || m->cursor >= m->nitems )
-		return 0;
+		return NULL;
 
 	return m->items[m->cursor];
 }
@@ -654,7 +654,7 @@ void SpinControl_DoSlide( menulist_s *s, int dir )
 
 	if ( s->curvalue < 0 )
 		s->curvalue = 0;
-	else if ( s->itemnames[s->curvalue] == 0 )
+	else if ( s->itemnames[s->curvalue] == NULL )
 		s->curvalue--;
 
 	if ( s->generic.callback )

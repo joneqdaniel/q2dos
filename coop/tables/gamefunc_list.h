@@ -2157,4 +2157,4 @@
 {"Blinky_BeginRunFrame", (byte *)Blinky_BeginRunFrame},
 {"Blinky_UpdateCameraThink", (byte *)Blinky_UpdateCameraThink},
 {"Blinky_RunRun", (byte *)Blinky_RunRun},
-{0, 0}
+{NULL, NULL}

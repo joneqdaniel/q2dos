@@ -219,14 +219,14 @@ int texfilter_box_setval (void)
 static const char *aniso0_names[] =
 {
 	"not supported",
-	0
+	NULL
 };
 
 static const char *aniso2_names[] =
 {
 	"off",
 	"2x",
-	0
+	NULL
 };
 
 static const char *aniso4_names[] =
@@ -234,7 +234,7 @@ static const char *aniso4_names[] =
 	"off",
 	"2x",
 	"4x",
-	0
+	NULL
 };
 
 static const char *aniso8_names[] =
@@ -243,7 +243,7 @@ static const char *aniso8_names[] =
 	"2x",
 	"4x",
 	"8x",
-	0
+	NULL
 };
 
 static const char *aniso16_names[] =
@@ -253,7 +253,7 @@ static const char *aniso16_names[] =
 	"4x",
 	"8x",
 	"16x",
-	0
+	NULL
 };
 
 static const char **GetAnisoNames ()

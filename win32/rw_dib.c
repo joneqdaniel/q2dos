@@ -263,7 +263,7 @@ void DIB_SetPalette( const unsigned char *_pal )
 		if ( sww_state.hPal )
 		{
 			DeleteObject( sww_state.hPal );
-			sww_state.hPal = 0;
+			sww_state.hPal = NULL;
 		}
 
 		/*
@@ -320,7 +320,7 @@ void DIB_Shutdown( void )
 	if ( sww_state.hPal )
 	{
 		DeleteObject( sww_state.hPal );
-		sww_state.hPal = 0;
+		sww_state.hPal = NULL;
 	}
 
 	if ( sww_state.hpalOld )
@@ -347,7 +347,7 @@ void DIB_Shutdown( void )
 	if ( sww_state.hDC )
 	{
 		ReleaseDC( sww_state.hWnd, sww_state.hDC );
-		sww_state.hDC = 0;
+		sww_state.hDC = NULL;
 	}
 }
 

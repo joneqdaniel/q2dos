@@ -275,7 +275,7 @@ void stopBlinkyCam (edict_t *ent)
 		return;
 	}
 
-	bdata->cam_target = 0;
+	bdata->cam_target = NULL;
 	ent->svflags &= ~SVF_NOCLIENT;
 	ent->client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
 	bdata->cam_decoy->svflags |= SVF_NOCLIENT;

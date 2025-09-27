@@ -706,14 +706,14 @@ cmodel_t	*CM_InlineModel (char *name)
 	if (!name || name[0] != '*')
 	{
 		Com_Error (ERR_DROP, "CM_InlineModel: bad name");
-		return 0;
+		return NULL;
 	}
 
 	num = atoi (name+1);
 	if (num < 1 || num >= numcmodels)
 	{
 		Com_Error (ERR_DROP, "CM_InlineModel: bad number");
-		return 0;
+		return NULL;
 	}
 
 	return &map_cmodels[num];
@@ -899,7 +899,6 @@ int CM_PointLeafnum (vec3_t p)
 		return 0;		// sound may call this without map loaded
 	return CM_PointLeafnum_r (p, 0);
 }
-
 
 
 /*

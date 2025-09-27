@@ -18,19 +18,17 @@
 #include <machine/param.h>
 #endif
 
+#ifndef MAP_ANONYMOUS
+#define MAP_ANONYMOUS MAP_ANON
+#endif
 #ifndef PATH_MAX
 #define PATH_MAX 1024
 #endif
 
 #include "glob.h"
-
 #include "qcommon.h"
 
 //===============================================================================
-
-#ifndef MAP_ANONYMOUS
-#define MAP_ANONYMOUS MAP_ANON
-#endif
 
 static byte *membase;
 static int maxhunksize;
@@ -41,7 +39,7 @@ void *Hunk_Begin (int maxsize)
 	// reserve a huge chunk of memory, but don't commit any yet
 	maxhunksize = maxsize + sizeof(int);
 	curhunksize = 0;
-	membase = (byte *) mmap(0, maxhunksize, PROT_READ|PROT_WRITE,
+	membase = (byte *) mmap(NULL, maxhunksize, PROT_READ|PROT_WRITE,
 				MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
 	if (membase == MAP_FAILED)
 		Sys_Error("unable to virtual allocate %d bytes", maxsize);
@@ -260,4 +258,3 @@ void Sys_FindClose (void)
 		closedir(fdir);
 	fdir = NULL;
 }
-

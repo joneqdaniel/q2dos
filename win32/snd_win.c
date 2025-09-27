@@ -338,9 +338,9 @@ void FreeSound (void)
 	pDS = NULL;
 	pDSBuf = NULL;
 	pDSPBuf = NULL;
-	hWaveOut = 0;
-	hData = 0;
-	hWaveHdr = 0;
+	hWaveOut = NULL;
+	hData = NULL;
+	hWaveHdr = NULL;
 	lpData = NULL;
 	lpWaveHdr = NULL;
 	dsound_init = false;

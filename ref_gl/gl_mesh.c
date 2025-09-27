@@ -92,11 +92,11 @@ static void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 	int		index_xyz;
 	float	*lerp;
 
-	frame = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames 
+	frame = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames
 		+ currententity->frame * paliashdr->framesize);
 	verts = v = frame->verts;
 
-	oldframe = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames 
+	oldframe = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames
 		+ currententity->oldframe * paliashdr->framesize);
 	ov = oldframe->verts;
 
@@ -166,7 +166,7 @@ static void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 			}
 		}
 
-		if ( qglLockArraysEXT != 0 )
+		if ( qglLockArraysEXT != NULL )
 			qglLockArraysEXT( 0, paliashdr->num_xyz );
 
 		while (1)
@@ -214,7 +214,7 @@ static void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 			qglEnd ();
 		}
 
-		if ( qglUnlockArraysEXT != 0 )
+		if ( qglUnlockArraysEXT != NULL )
 			qglUnlockArraysEXT();
 	}
 	else
@@ -361,24 +361,20 @@ static qboolean R_CullAliasModel(vec3_t bbox[8], entity_t *e)
 
 	if ( ( e->frame >= paliashdr->num_frames ) || ( e->frame < 0 ) )
 	{
-		ri.Con_Printf (PRINT_ALL, "R_CullAliasModel %s: no such frame %d\n", 
-			currentmodel->name, e->frame);
+		ri.Con_Printf (PRINT_ALL, "R_CullAliasModel %s: no such frame %d\n", currentmodel->name, e->frame);
 		e->frame = 0;
 	}
 	if ( ( e->oldframe >= paliashdr->num_frames ) || ( e->oldframe < 0 ) )
 	{
-		ri.Con_Printf (PRINT_ALL, "R_CullAliasModel %s: no such oldframe %d\n", 
-			currentmodel->name, e->oldframe);
+		ri.Con_Printf (PRINT_ALL, "R_CullAliasModel %s: no such oldframe %d\n", currentmodel->name, e->oldframe);
 		e->oldframe = 0;
 	}
 
-	pframe = ( daliasframe_t * ) ( ( byte * ) paliashdr + 
-		                              paliashdr->ofs_frames +
-									  e->frame * paliashdr->framesize);
+	pframe = (daliasframe_t *) ((byte *) paliashdr + paliashdr->ofs_frames +
+							  e->frame * paliashdr->framesize);
 
-	poldframe = ( daliasframe_t * ) ( ( byte * ) paliashdr + 
-		                              paliashdr->ofs_frames +
-									  e->oldframe * paliashdr->framesize);
+	poldframe = (daliasframe_t *) ((byte *) paliashdr +  paliashdr->ofs_frames +
+							  e->oldframe * paliashdr->framesize);
 
 	/* compute axially aligned mins and maxs */
 	if ( pframe == poldframe )
@@ -538,7 +534,7 @@ void R_DrawAliasModel (entity_t *e)
 			}
 
 		}
-		
+
 		if ( gl_monolightmap->string[0] != '0' )
 		{
 			float s = shadelight[0];
@@ -629,7 +625,7 @@ void R_DrawAliasModel (entity_t *e)
 			qglCullFace(GL_BACK);
 	}
 
-    qglPushMatrix ();
+	qglPushMatrix ();
 	e->angles[PITCH] = -e->angles[PITCH];				/* sigh. */
 	e->angles[ROLL] = e->angles[ROLL] * R_RollMult();	/* Knightmare- roll is backwards */
 	R_RotateForEntity (e, true);
@@ -664,7 +660,7 @@ void R_DrawAliasModel (entity_t *e)
 	}
 
 
-	if ( (currententity->frame >= paliashdr->num_frames) 
+	if ( (currententity->frame >= paliashdr->num_frames)
 		|| (currententity->frame < 0) )
 	{
 		ri.Con_Printf (PRINT_ALL, "R_DrawAliasModel %s: no such frame %d\n",

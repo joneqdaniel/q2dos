@@ -293,10 +293,10 @@ qboolean VID_CreateWindow (int width, int height, rdisptype_t fullscreen)
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = glw_state.hInstance;
-	wc.hIcon         = 0;
+	wc.hIcon         = NULL;
 	wc.hCursor       = LoadCursor (NULL,IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)COLOR_GRAYTEXT;
-	wc.lpszMenuName  = 0;
+	wc.lpszMenuName  = NULL;
 	wc.lpszClassName = WINDOW_CLASS_NAME;
 
 	if (!RegisterClass(&wc))
@@ -340,7 +340,7 @@ qboolean VID_CreateWindow (int width, int height, rdisptype_t fullscreen)
 		nHorzRes = GetDeviceCaps(hDC, HORZRES);
 		nVertRes = GetDeviceCaps(hDC, VERTRES);
 		nBPP = GetDeviceCaps(hDC, BITSPIXEL);
-		ReleaseDC( 0, hDC );
+		ReleaseDC( NULL, hDC );
 
 		if (nHorzRes <= vid.width || nVertRes <= vid.height)
 		{
@@ -478,7 +478,7 @@ static void VID_SoftRestart (void)
 		int nHorzRes = GetDeviceCaps( hDC, HORZRES );
 		int nVertRes = GetDeviceCaps( hDC, VERTRES );
 		int nBPP = GetDeviceCaps(hDC, BITSPIXEL);
-		ReleaseDC( 0, hDC );
+		ReleaseDC( NULL, hDC );
 
 		if (nHorzRes <= vid.width || nVertRes <= vid.height)
 		{
@@ -607,7 +607,7 @@ rserr_t GLimp_SetMode( int *pwidth, int *pheight, int mode, rdisptype_t fullscre
 
 			ri.Con_Printf( PRINT_ALL, "...using desktop display depth of %d\n", bitspixel );
 
-			ReleaseDC( 0, hdc );
+			ReleaseDC( NULL, hdc );
 		}
 
 		ri.Con_Printf( PRINT_ALL, "...calling CDS: " );
@@ -654,7 +654,7 @@ rserr_t GLimp_SetMode( int *pwidth, int *pheight, int mode, rdisptype_t fullscre
 
 				ri.Con_Printf( PRINT_ALL, "...setting windowed mode\n" );
 
-				ChangeDisplaySettings( 0, 0 );
+				ChangeDisplaySettings( NULL, 0 );
 
 				*pwidth = width;
 				*pheight = height;
@@ -678,7 +678,7 @@ rserr_t GLimp_SetMode( int *pwidth, int *pheight, int mode, rdisptype_t fullscre
 	{
 		ri.Con_Printf( PRINT_ALL, "...setting windowed mode\n" );
 
-		ChangeDisplaySettings( 0, 0 );
+		ChangeDisplaySettings( NULL, 0 );
 
 		*pwidth = width;
 		*pheight = height;
@@ -728,14 +728,14 @@ void GLimp_Shutdown( void )
 	if ( glw_state.log_fp )
 	{
 		fclose( glw_state.log_fp );
-		glw_state.log_fp = 0;
+		glw_state.log_fp = NULL;
 	}
 
 	UnregisterClass (WINDOW_CLASS_NAME, glw_state.hInstance);
 
 	if ( gl_state.fullscreen )
 	{
-		ChangeDisplaySettings( 0, 0 );
+		ChangeDisplaySettings( NULL, 0 );
 		gl_state.fullscreen = false;
 	}
 }
@@ -938,7 +938,7 @@ qboolean GLimp_InitGL (void)
 	** startup the OpenGL subsystem by creating a context and making
 	** it current
 	*/
-	if ( ( glw_state.hGLRC = qwglCreateContext( glw_state.hDC ) ) == 0 )
+	if ( ( glw_state.hGLRC = qwglCreateContext( glw_state.hDC ) ) == NULL )
 	{
 		ri.Con_Printf (PRINT_ALL, "GLimp_Init() - qwglCreateContext failed\n");
 
