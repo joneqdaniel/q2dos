@@ -36,6 +36,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "rw_win.h"
 #include "winquake.h"
 
+#ifndef GetWindowLongPtr
+#define GetWindowLongPtr GetWindowLong
+#endif
+
+#ifndef SetWindowLongPtr
+#define SetWindowLongPtr SetWindowLong
+#endif
+
 // Console variables that we need to access from this module
 
 swwstate_t sww_state;
@@ -315,7 +323,7 @@ rserr_t SWimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen 
 		if ( retval == rserr_invalid_fullscreen ||
 			 ( retval == rserr_ok && !fullscreen ) )
 		{
-			SetWindowLong( sww_state.hWnd, GWL_STYLE, WINDOW_STYLE );
+			SetWindowLongPtr( sww_state.hWnd, GWL_STYLE, WINDOW_STYLE );
 		}
 	}
 #endif
