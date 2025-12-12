@@ -661,6 +661,7 @@ void SV_Loadgame_f (void)
 	if (strstr(dir, "..") || strchr(dir, '/') || strchr(dir, '\\'))
 	{
 		Com_Printf ("Bad savedir.\n");
+		return;
 	}
 
 	// make sure the server.ssv file exists
@@ -738,6 +739,7 @@ void SV_Savegame_f (void)
 	if (strstr(dir, "..") || strchr(dir, '/') || strchr(dir, '\\'))
 	{
 		Com_Printf ("Bad savedir.\n");
+		return;
 	}
 
 	Com_Printf ("Saving game...\n");
