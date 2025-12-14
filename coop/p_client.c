@@ -341,11 +341,11 @@ SP_info_player_coop(edict_t *self)
 		G_FreeEdict(self);
 		return;
 	}
-	
+
 	/* Entity number 292 is an unnamed info_player_start
 	   next to a named info_player_start. Delete it, if
 	   we're in coop since it screws up the spawnpoint
-	   selection heuristic in SelectCoopSpawnPoint(). 
+	   selection heuristic in SelectCoopSpawnPoint().
 	   This unnamed info_player_start is selected as
 	   spawnpoint for player 0, therefor none of the
 	   named info_coop_start() matches... */
@@ -2360,7 +2360,7 @@ PutClientInServer(edict_t *ent)
 		char		userinfo[MAX_INFO_STRING];
 
 		int health = client->pers.health;
-		
+
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistant(client);
 		ClientUserinfoChanged (ent, userinfo);
@@ -2748,6 +2748,7 @@ ClientUserinfoChanged(edict_t *ent, char *userinfo)
 				ent->client->pers.name_timeout = level.time + sv_coop_name_timeout->value;
 			}
 			strncpy(ent->client->pers.netname, s, sizeof(ent->client->pers.netname)-1);
+			ent->client->pers.netname[sizeof(ent->client->pers.netname)-1] = 0;
 		}
 	}
 
