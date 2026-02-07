@@ -45,6 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	CPUSTRING	"AXP"
 #endif
 
+#define CFGFILENAME	"q2dosw.cfg"
+
 #elif defined __linux__
 
 #define BUILDSTRING "Linux"
@@ -57,6 +59,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CPUSTRING "Unknown"
 #endif
 
+#define CFGFILENAME	"q2dosl.cfg"
+
 #elif defined __sun__
 
 #define BUILDSTRING "Solaris"
@@ -67,6 +71,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CPUSTRING "sparc"
 #endif
 
+#define CFGFILENAME	"q2doss.cfg"
+
 #else	// !WIN32
 
 #ifdef __DJGPP__
@@ -76,6 +82,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define BUILDSTRING "NON-WIN32"
 #define	CPUSTRING	"NON-WIN32"
 #endif
+
+#define CFGFILENAME	"q2dos.cfg"
 
 #endif
 

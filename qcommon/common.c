@@ -1440,7 +1440,7 @@ void Qcommon_Init (int argc, char **argv)
 	FS_InitFilesystem ();
 
 	/* FS: New default config stuff so we can keep some sanity between DOS and Win32 */
-	cfg_default = Cvar_Get("cfg_default", "q2dos.cfg", CVAR_NOSET);
+	cfg_default = Cvar_Get("cfg_default", CFGFILENAME, CVAR_NOSET);
 	Cvar_SetDescription("cfg_default", "Default cfg file to use for this gaming session.  Must be set at run time.");
 	Cbuf_AddText ("exec default.cfg\n");
 

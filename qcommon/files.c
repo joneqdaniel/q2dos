@@ -597,7 +597,7 @@ static char *pakfile_ignore_names[] =
 	"scrnshot/",
 	"autoexec.cfg",
 	"config.cfg",
-	"q2dos.cfg", /* FS: Added */
+	CFGFILENAME, /* FS: Added */
 	NULL
 };
 

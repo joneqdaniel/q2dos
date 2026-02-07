@@ -1888,7 +1888,7 @@ void CL_WriteConfiguration (char *cfgName)
 		return;
 
 	if(!(cfgName) || (cfgName[0] == 0)) /* FS: Sanity check */
-		Com_sprintf (path, sizeof(path),"%s/q2dos.cfg", FS_Gamedir());
+		Com_sprintf (path, sizeof(path),"%s/%s", FS_Gamedir(), CFGFILENAME);
 	else
 		Com_sprintf (path, sizeof(path),"%s/%s.cfg", FS_Gamedir(), cfgName);
 
