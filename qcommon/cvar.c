@@ -43,6 +43,8 @@ static qboolean Cvar_InfoValidate (char *s)
 		return false;
 	if (strchr(s, ';'))
 		return false;
+	if (strchr(s, 'ÿ')) /* FS: Don't allow this crap in infostrings. */
+		return false;
 	return true;
 }
 

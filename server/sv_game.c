@@ -246,6 +246,12 @@ void PF_Configstring (int index, char *val)
 	if (!val)
 		val = "";
 
+	if (val[0] == -1) /* FS: Don't let this happen or the client will parse a svc_bad. */
+	{
+		Com_Printf("PF_Configstring: -1 configstring sent.\n");
+		val = "";
+	}
+
 	// catch overflow of indvidual configstrings
 	len = strlen(val);
 	maxlen = CS_SIZE(index);
