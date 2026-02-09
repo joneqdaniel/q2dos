@@ -111,6 +111,9 @@ PF_cprintf (edict_t *ent, int level, const char *fmt, ...)
 	va_list		argptr;
 	int			n;
 
+	if (!fmt || fmt[0] == '\0') /* FS: Sanity check, but also don't waste packets from empty strings. */
+		return;
+
 	n = 0;
 	if (ent)
 	{
@@ -118,6 +121,7 @@ PF_cprintf (edict_t *ent, int level, const char *fmt, ...)
 		if ((n < 1) || (n > maxclients->value))
 		{
 			Com_Error (ERR_DROP, "cprintf to a non-client");
+			return;
 		}
 	}
 
@@ -128,7 +132,11 @@ PF_cprintf (edict_t *ent, int level, const char *fmt, ...)
 
 	if (ent)
 	{
-		SV_ClientPrintf (svs.clients+(n-1), level, "%s", msg);
+		client_t *cl = ( client_t *)( svs.clients+(n-1) );
+		if ( cl->state >= cs_connected )
+		{
+			SV_ClientPrintf (svs.clients+(n-1), level, "%s", msg);
+		}
 	}
 	else
 	{
@@ -149,6 +157,9 @@ PF_centerprintf (edict_t *ent, const char *fmt, ...)
 	char		msg[1024];
 	va_list		argptr;
 	int			n;
+
+	if (!fmt || fmt[0] == '\0') /* FS: Sanity check, but also don't waste packets from empty strings. */
+		return;
 
 	n = NUM_FOR_EDICT(ent);
 	if ((n < 1) || (n > maxclients->value))
@@ -179,6 +190,12 @@ PF_error (const char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
+
+	if (!fmt || fmt[0] == '\0') /* FS: Sanity check, but also don't waste packets from empty strings. */
+	{
+		Com_Error(ERR_DROP, "Game Error sent with no message!\n");
+		return;
+	}
 
 	va_start (argptr,fmt);
 	Q_vsnprintf (msg, sizeof(msg), fmt, argptr);
