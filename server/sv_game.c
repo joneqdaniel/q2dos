@@ -194,7 +194,6 @@ PF_error (const char *fmt, ...)
 	if (!fmt || fmt[0] == '\0') /* FS: Sanity check, but also don't waste packets from empty strings. */
 	{
 		Com_Error(ERR_DROP, "Game Error sent with no message!\n");
-		return;
 	}
 
 	va_start (argptr,fmt);
