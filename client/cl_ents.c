@@ -1617,7 +1617,7 @@ void CL_AddEntities (void)
 	else
 		cl.lerpfrac = 1.0 - (cl.frame.servertime - cl.time) * 0.01;
 
-	if (cl_timedemo->intValue)
+	if (CL_IsDemoWithTimeDemo())
 		cl.lerpfrac = 1.0;
 
 //	CL_AddPacketEntities (&cl.frame);

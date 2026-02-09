@@ -1031,7 +1031,8 @@ void SV_Frame (int msec)
 	SV_ReadPackets ();
 
 	// move autonomous things around if enough time has passed
-	if (!sv_timedemo->intValue && svs.realtime < sv.time)
+	if ((!sv_timedemo->intValue && svs.realtime < sv.time) ||
+		(sv.state != ss_demo && svs.realtime < sv.time) ) /* FS: timedemo only in demos, please */
 	{
 		// never let the time get too far off
 		if (sv.time - svs.realtime > 100)

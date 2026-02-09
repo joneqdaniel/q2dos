@@ -471,7 +471,7 @@ void V_RenderView( float stereo_separation )
 	if (!cl.refresh_prepped)
 		return;			// still loading
 
-	if (cl_timedemo->intValue)
+	if (CL_IsDemoWithTimeDemo())
 	{
 		if (!cl.timedemo_start)
 			cl.timedemo_start = Sys_Milliseconds ();

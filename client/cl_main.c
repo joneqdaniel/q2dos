@@ -689,7 +689,7 @@ void CL_Disconnect (void)
 	if (cls.state == ca_disconnected)
 		return;
 
-	if (cl_timedemo && cl_timedemo->value)
+	if (cl.timedemo_start) /* FS: Just check if we got timedemo_start.  Removed isDemo boolean */
 	{
 		int	time;
 		
@@ -2111,7 +2111,7 @@ void CL_Frame_Async (int msec)
 		cls.netchan.last_received = Sys_Milliseconds ();
 	}
 
-	if (!cl_timedemo->intValue)
+	if (!CL_IsDemoWithTimeDemo())
 	{	// Don't flood packets out while connecting
 		if (cls.state == ca_connected && packetDelta < 100)
 		{
@@ -2337,7 +2337,7 @@ void CL_Frame (int msec)
 #endif
 
 #ifdef CLIENT_SPLIT_NETFRAME
-	if (cl_async->intValue && !cl_timedemo->intValue)
+	if (cl_async->intValue && !CL_IsDemoWithTimeDemo())
 	{
 		CL_Frame_Async (msec);
 		return;
@@ -2355,7 +2355,7 @@ void CL_Frame (int msec)
 		fps = bound(5, cl_maxfps->intValue, 72); /* FS: Default to 72hz if nothing is set */
 	}
 
-	if (!cl_timedemo->intValue)
+	if (!CL_IsDemoWithTimeDemo())
 	{
 		if (cls.state == ca_connected && extratime < 100)
 		{
@@ -2928,3 +2928,13 @@ void CL_Download_Calculate_KBps (int byteDistance, int totalSize)
 	dlSpeedInfo.prevTime = cls.realtime;
 }
 
+qboolean CL_IsDemoWithTimeDemo (void)
+{
+	/* FS: 4 is ss_demo, see server.h */
+	if (cl_timedemo && cl_timedemo->intValue && (Com_ServerState() == 4)) /* FS: Timedemo and a Demo Playing */
+	{
+		return true;
+	}
+
+	return false;
+}
