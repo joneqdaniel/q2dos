@@ -821,11 +821,16 @@ S_ClearBuffer
 void S_ClearBuffer (void)
 {
 	int		clear;
+	int		i;
 
 	if (!sound_started)
 		return;
 
 	s_rawend = 0;
+	for (i = 0; i < MAX_RAW_SAMPLES; i++) /* FS: Clear out the s_rawsamples too.  Should not matter, but just in case we read ahead of some garbage data on load. */
+	{
+		memset(&s_rawsamples[i], 0, sizeof(portable_samplepair_t));
+	}
 
 	if (dma.samplebits == 8)
 		clear = 0x80;
@@ -1140,15 +1145,15 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 		Cvar_ForceSet("s_musicvolume", "1.0");
 	}
 
+	if (s_musicvolume->modified || s_mastervolume->modified)
+	{
+		s_musicvolume->modified = false;
+	}
+
 	// rebuild scale tables if volume is modified
 	if (s_mastervolume->modified || s_volume->modified)
 	{
 		S_InitScaletable ();
-	}
-
-	if (s_musicvolume->modified)
-	{
-		s_musicvolume->modified = false;
 	}
 
 	VectorCopy(origin, listener_origin);
