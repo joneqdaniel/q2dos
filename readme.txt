@@ -111,6 +111,10 @@ By Neozeed, [HCI]Mara'akate, and sezero.
   that a demo is currently playing without having to hack between the server
   and client.  Starting a demo with demomap is easy, i.e.  demomap demo1.dm2.
   The extension must be incldued.
+* Some PS/2 mice on certain configurations can cause a performance drop when
+  looking around.  Using a serial mouse does not have this issue.  Unsure
+  if it is motherboard/chipset specific or something else.  Benchmark
+  and enable FPS counter to see if your system has this issue.
 
 6 - 3DFX Notes
 ---------------------------------------------------------
