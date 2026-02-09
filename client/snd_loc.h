@@ -171,6 +171,7 @@ extern	playsound_t	s_pendingplays;
 #define	MAX_RAW_SAMPLES	8192
 extern	portable_samplepair_t	s_rawsamples[MAX_RAW_SAMPLES];
 
+extern cvar_t	*s_mastervolume; /* FS */
 extern cvar_t	*s_volume;
 extern cvar_t	*s_nosound;
 extern cvar_t	*s_loadas8bit;

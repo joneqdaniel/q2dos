@@ -2812,7 +2812,7 @@ void CL_PingNetServers_f (void)
 
 	if ((Cmd_Argc() == 1) || (cls.key_dest == key_menu))
 	{
-		cls.gamespyupdate = SHOW_POPULATED_SERVERS;;
+		cls.gamespyupdate = SHOW_POPULATED_SERVERS;
 		Com_Printf("\x02Grabbing populated server list from GameSpy master. . .\n");
 	}
 	else

@@ -71,6 +71,7 @@ playsound_t	s_pendingplays;
 
 int			s_beginofs;
 
+cvar_t		*s_mastervolume; /* FS: Added */
 cvar_t		*s_volume;
 cvar_t		*s_testsound;
 cvar_t		*s_loadas8bit;
@@ -127,6 +128,7 @@ void S_Init (void)
 	}
 	else
 	{
+		s_mastervolume = Cvar_Get("s_mastervolume", "1.0", CVAR_ARCHIVE); /* FS: Added */
 		s_volume = Cvar_Get ("s_volume", "0.7", CVAR_ARCHIVE);
 		s_khz = Cvar_Get ("s_khz", "11025", CVAR_ARCHIVE);
 		s_loadas8bit = Cvar_Get ("s_loadas8bit", "0", CVAR_ARCHIVE);
@@ -1017,8 +1019,9 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, q
 
 	scale = (float) rate / dma.speed;
 	if (music)
-		intVolume = (int) (s_musicvolume->value * 256);
-	else	intVolume = (int) (s_volume->value * 256);
+		intVolume = (int) ((s_musicvolume->value * s_mastervolume->value) * 256);
+	else
+		intVolume = (int) ((s_volume->value * s_mastervolume->value) * 256);
 
 	if (channels == 2 && width == 2)
 	{
@@ -1100,7 +1103,7 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 	if (!sound_started)
 		return;
 
-	// if the laoding plaque is up, clear everything
+	// if the loading plaque is up, clear everything
 	// out to make sure we aren't looping a dirty
 	// dma buffer while loading
 	if (cls.disable_screen)
@@ -1109,9 +1112,44 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 		return;
 	}
 
+	/* FS: Don't allow dumb values. */
+	if (s_mastervolume->value < 0.0f)
+	{
+		Cvar_ForceSet("s_mastervolume", "0.0");
+	}
+	else if (s_mastervolume->value > 1.0f)
+	{
+		Cvar_ForceSet("s_mastervolume", "1.0");
+	}
+
+	if (s_volume->value < 0.0f)
+	{
+		Cvar_ForceSet("s_volume", "0.0");
+	}
+	else if (s_volume->value > 1.0f)
+	{
+		Cvar_ForceSet("s_volume", "1.0");
+	}
+
+	if (s_musicvolume->value < 0.0f)
+	{
+		Cvar_ForceSet("s_musicvolume", "0.0");
+	}
+	else if (s_musicvolume->value > 1.0f)
+	{
+		Cvar_ForceSet("s_musicvolume", "1.0");
+	}
+
 	// rebuild scale tables if volume is modified
-	if (s_volume->modified)
+	if (s_mastervolume->modified || s_volume->modified)
+	{
 		S_InitScaletable ();
+	}
+
+	if (s_musicvolume->modified)
+	{
+		s_musicvolume->modified = false;
+	}
 
 	VectorCopy(origin, listener_origin);
 	VectorCopy(forward, listener_forward);
