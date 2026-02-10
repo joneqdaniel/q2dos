@@ -216,7 +216,7 @@ typedef struct
 	cvar_t	*(*Cvar_Set)( char *name, char *value );
 	void	 (*Cvar_SetValue)( char *name, float value );
 	void	(*Cvar_SetDescription) (char *name, const char *description); /* FS */
-	void	(*Cvar_ForceSet) (char *name, char* value); /* FS */
+	cvar_t	*(*Cvar_ForceSet) (char *name, char* value); /* FS */
 
 	qboolean	(*Vid_GetModeInfo)( int *width, int *height, int mode );
 	void		(*Vid_MenuInit)( void );
