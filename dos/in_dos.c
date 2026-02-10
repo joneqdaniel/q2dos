@@ -353,7 +353,7 @@ void IN_MouseSetPS2Resolution (void)
 	else
 		resolution = (short)m_ps2_resolution->intValue;
 
-	Com_Printf("Setting P/S2 resolution to ");
+	Com_Printf("Setting PS/2 resolution to ");
 	switch (resolution)
 	{
 	case 0:
