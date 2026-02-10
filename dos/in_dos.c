@@ -59,6 +59,7 @@ cvar_t *m_ps2_resolution;
 
 static void IN_MouseSetPS2Rate (void);
 static void IN_MouseSetPS2Resolution (void);
+static const char *IN_MouseGetPS2ResolutionString (short val);
 
 static void IN_MLookDown (void) {
 	mlooking = true;
@@ -112,7 +113,7 @@ static void IN_StartupMouse (void)
 	dos_int86(0x15);
 	if (regs.h.dl)
 	{
-		Com_Printf("PS/2 mouse resolution: %d.  sample rate: %d.\n", regs.h.cl, regs.h.dl);
+		Com_Printf("PS/2 mouse resolution: %s.  sample rate: %d.\n", IN_MouseGetPS2ResolutionString(regs.h.cl), regs.h.dl);
 	}
 	else
 	{
@@ -337,7 +338,7 @@ static void IN_MouseSetPS2Rate (void)
 	m_ps2_sample_rate->modified = false;
 }
 
-void IN_MouseSetPS2Resolution (void)
+static void IN_MouseSetPS2Resolution (void)
 {
 	short resolution;
 
@@ -353,25 +354,7 @@ void IN_MouseSetPS2Resolution (void)
 	else
 		resolution = (short)m_ps2_resolution->intValue;
 
-	Com_Printf("Setting PS/2 resolution to ");
-	switch (resolution)
-	{
-	case 0:
-		Com_Printf("one count per mm\n");
-		break;
-	case 1:
-		Com_Printf("two counts per mm\n");
-		break;
-	case 2:
-		Com_Printf("four counts per mm\n");
-		break;
-	case 3:
-		Com_Printf("eight counts per mm\n");
-		break;
-	default:
-		Com_Printf("UNKNOWN!  THIS IS AN ERROR!\n");
-		break;
-	}
+	Com_Printf("Setting PS/2 resolution to %s\n", IN_MouseGetPS2ResolutionString(resolution));
 
 	regs.h.ah = 0;
 	regs.x.ax = 0xC203;
@@ -384,4 +367,23 @@ void IN_MouseSetPS2Resolution (void)
 	}
 
 	m_ps2_resolution->modified = false;
+}
+
+static const char *IN_MouseGetPS2ResolutionString (short val)
+{
+	switch (val)
+	{
+	case 0:
+		return "one count per mm";
+	case 1:
+		return "two counts per mm";
+	case 2:
+		return "four counts per mm";
+	case 3:
+		return "eight counts per mm";
+	default:
+		return "UNKNOWN!  THIS IS AN ERROR!";
+	}
+
+	return "UNKNOWN!  THIS IS AN ERROR!\n";
 }
