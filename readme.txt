@@ -110,7 +110,7 @@ By Neozeed, [HCI]Mara'akate, and sezero.
   will set the attractloop mode on which can be used as a hint from the client
   that a demo is currently playing without having to hack between the server
   and client.  Starting a demo with demomap is easy, i.e.  demomap demo1.dm2.
-  The extension must be incldued.
+  The extension must be included.
 * Some PS/2 mice on certain configurations can cause a performance drop when
   looking around.  Using a serial mouse does not have this issue.  Sometimes
   reducing the sampling rate can help.  Use m_ps2_sample_rate CVAR with
