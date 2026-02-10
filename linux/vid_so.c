@@ -272,6 +272,7 @@ qboolean VID_LoadRefresh (const char *name)
 	ri.Cvar_Set = Cvar_Set;
 	ri.Cvar_SetValue = Cvar_SetValue;
 	ri.Cvar_SetDescription = Cvar_SetDescription; /* FS */
+	ri.Cvar_ForceSet = Cvar_ForceSet;             /* FS */
 	ri.Vid_GetModeInfo = VID_GetModeInfo;
 	ri.Vid_MenuInit = VID_MenuInit;
 	ri.Vid_NewWindow = VID_NewWindow;
