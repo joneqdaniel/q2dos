@@ -112,9 +112,16 @@ By Neozeed, [HCI]Mara'akate, and sezero.
   and client.  Starting a demo with demomap is easy, i.e.  demomap demo1.dm2.
   The extension must be incldued.
 * Some PS/2 mice on certain configurations can cause a performance drop when
-  looking around.  Using a serial mouse does not have this issue.  Unsure
-  if it is motherboard/chipset specific or something else.  Benchmark
-  and enable FPS counter to see if your system has this issue.
+  looking around.  Using a serial mouse does not have this issue.  Sometimes
+  reducing the sampling rate can help.  Use m_ps2_sample_rate CVAR with
+  a value of 0-6 for 10hz, 20hz, 40hz, 100hz, and 200hz respectively.
+  40hz seems to work best on my machine.   Additionally, you can set
+  m_ps2_resolution with a value of 0-3 for 1 count per mm, 2 count per mm,
+  4 count per mm (default), and 8 count per mm respectively.  8 count
+  can help give a boost to sensitvity.  Please note these CVARs are not
+  saved.  You will need to add them to autoexec.cfg.  If you have problems
+  with these CVARs or the PS/2 detection for this additional code you can
+  start the game -nops2 parameter to bypass it.
 
 6 - 3DFX Notes
 ---------------------------------------------------------
