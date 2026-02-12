@@ -45,6 +45,7 @@ float	*shadedots = r_avertexnormal_dots[0];
 extern vec3_t lightspot;
 
 extern void MYgluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
+extern GLdouble _farz;
 
 static void GL_LerpVerts(int nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t *verts, float *lerp, float move[3], float frontv[3], float backv[3])
 {
@@ -617,7 +618,7 @@ void R_DrawAliasModel (entity_t *e)
 
 		if (bDoGunFov)
 		{
-			MYgluPerspective(r_gunfov->value, (float)r_newrefdef.width / r_newrefdef.height, 4, 4096);
+			MYgluPerspective(r_gunfov->value, (float)r_newrefdef.width / r_newrefdef.height, 4, _farz);
 			qglMatrixMode(GL_MODELVIEW);
 		}
 

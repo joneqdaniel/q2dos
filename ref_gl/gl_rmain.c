@@ -151,6 +151,8 @@ cvar_t	*r_skydistance; /* Knightmare- variable sky range */
 cvar_t	*developer;		/* Knightmare added */
 cvar_t	*r_gunfov;		/* FS */
 
+GLdouble _farz;
+
 /*
 =================
 R_CullBox
@@ -731,7 +733,6 @@ void R_SetupGL (void)
 	int		x, x2, y2, y, w, h;
 
 	/* Knightmare- variable sky range */
-	static GLdouble farz; 
 	GLdouble boxsize;
 	/* end Knightmare */
 
@@ -755,16 +756,16 @@ void R_SetupGL (void)
 		r_skydistance->modified = false;
 		boxsize = r_skydistance->value;
 		boxsize -= 252 * ceil (boxsize / 2300);
-		farz = 1.0;
-		while (farz < boxsize) // make this a power of 2
+		_farz = 1.0;
+		while (_farz < boxsize) // make this a power of 2
 		{
-			farz *= 2.0;
-			if (farz >= 65536) // don't make it larger than this
+			_farz *= 2.0;
+			if (_farz >= 65536) // don't make it larger than this
 				break;
 		}
-		farz *= 2.0; //double since boxsize is distance from camera to edge of skybox
+		_farz *= 2.0; //double since boxsize is distance from camera to edge of skybox
 					//not total size of skybox
-		ri.Con_Printf(PRINT_DEVELOPER, "farz now set to %g\n", farz);
+		ri.Con_Printf(PRINT_DEVELOPER, "farz now set to %g\n", _farz);
 	}
 	/* end Knightmare */
 
@@ -776,7 +777,7 @@ void R_SetupGL (void)
 	qglMatrixMode(GL_PROJECTION);
     qglLoadIdentity ();
  	/* Knightmare-  increase back clipping plane distance */
-	MYgluPerspective (r_newrefdef.fov_y,  screenaspect,  4,  farz); // was 4096
+	MYgluPerspective (r_newrefdef.fov_y,  screenaspect,  4,  _farz); // was 4096
 	/* end Knightmare */
 
 	qglCullFace(GL_FRONT);
