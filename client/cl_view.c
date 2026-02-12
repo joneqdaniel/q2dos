@@ -262,6 +262,7 @@ void CL_PrepRefresh (void)
 	char		name[MAX_QPATH];
 	float		rotate;
 	vec3_t		axis;
+	size_t		mapnameLen;
 
 	if (!cl.configstrings[CS_MODELS+1][0])
 		return;		// no map loaded
@@ -270,9 +271,19 @@ void CL_PrepRefresh (void)
 	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
 
 	// let the render dll load the map
-//	strncpy (mapname, cl.configstrings[CS_MODELS+1] + 5);	// skip "maps/"
 	Q_strncpyz (mapname, cl.configstrings[CS_MODELS+1] + 5, sizeof(mapname));	// skip "maps/"
-	mapname[strlen(mapname)-4] = 0;		// cut off ".bsp"
+	mapnameLen = strlen(mapname);
+	if (mapnameLen < 4) /* FS: Shut up SCAs. */
+	{
+		Com_Printf("CL_PrepRefresh(): mapnameLen is < 4 [%zd]!\n", mapnameLen);
+		return;
+	}
+	mapname[mapnameLen-4] = 0;		// cut off ".bsp"
+	if (mapname[0] == '\0') /* FS: Ditto. */
+	{
+		Com_Printf("CL_PrepRefresh(): mapname is null!\n");
+		return;
+	}
 
 	// register models, pics, and skins
 	Com_Printf ("Map: %s\r", mapname); 
@@ -289,7 +300,6 @@ void CL_PrepRefresh (void)
 	CL_RegisterTEntModels ();
 
 	num_cl_weaponmodels = 1;
-//	strncpy(cl_weaponmodels[0], "weapon.md2");
 	Q_strncpyz(cl_weaponmodels[0], "weapon.md2", sizeof(cl_weaponmodels[0]));
 
 	for (i=1 ; i<MAX_MODELS && cl.configstrings[CS_MODELS+i][0] ; i++)

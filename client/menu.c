@@ -2294,6 +2294,7 @@ void M_Credits_MenuDraw( void )
 	{
 		int j, stringoffset = 0;
 		int bold = false;
+		size_t credLen = strlen(credits[i]);
 
 		if ( y <= -8 )
 			continue;
@@ -2313,7 +2314,7 @@ void M_Credits_MenuDraw( void )
 		{
 			int x;
 
-			x = ( viddef.width - strlen( credits[i] ) * 8 - stringoffset * 8 ) / 2 + ( j + stringoffset ) * 8;
+			x = ( viddef.width - credLen * 8 - stringoffset * 8 ) / 2 + ( j + stringoffset ) * 8;
 
 			if ( bold )
 				re.DrawChar( x, y, credits[i][j+stringoffset] + 128 );
@@ -3609,8 +3610,6 @@ void StartServer_MenuInit( void )
 	}
 	memset( mapnames, 0, sizeof( char * ) * ( nummaps + 1 ) );
 
-	s = buffer;
-
 	for ( i = 0; i < nummaps; i++ )
 	{
 		char  shortname[MAX_TOKEN_CHARS];
@@ -4899,6 +4898,8 @@ qboolean PlayerConfig_MenuInit( void )
 	return true;
 }
 
+static entity_t playerconfig_Entity[2]; /* FS: Moved here as it will leave scope. */
+
 void PlayerConfig_MenuDraw( void )
 {
 	extern float CalcFov( float fov_x, float w, float h );
@@ -4934,17 +4935,17 @@ void PlayerConfig_MenuDraw( void )
 	{
 		int			yaw; // was static
 		vec3_t		modelOrg;
-		entity_t	entity[2], *ent;
+		entity_t	playerconfig_Entity[2], *ent;
 
 		refdef.num_entities = 0;
-		refdef.entities = entity;
+		refdef.entities = playerconfig_Entity;
 
 		yaw = anglemod(cl.time/10);
 		VectorSet (modelOrg, 80, 0, 0);
 
 		// Setup player model
-		ent = &entity[0];
-		memset( &entity[0], 0, sizeof( entity[0] ) );
+		ent = &playerconfig_Entity[0];
+		memset( &playerconfig_Entity[0], 0, sizeof(playerconfig_Entity[0] ) );
 
 		Com_sprintf( scratch, sizeof( scratch ), "players/%s/tris.md2", s_pmi[s_player_model_box.curvalue].directory );
 		ent->model = re.RegisterModel( scratch );
@@ -4960,8 +4961,8 @@ void PlayerConfig_MenuDraw( void )
 		refdef.num_entities++;
 
 		// Setup weapon model
-		ent = &entity[1];
-		memset( &entity[1], 0, sizeof( entity[1] ) );
+		ent = &playerconfig_Entity[1];
+		memset( &playerconfig_Entity[1], 0, sizeof(playerconfig_Entity[1] ) );
 
 		Com_sprintf( scratch, sizeof( scratch ), "players/%s/weapon.md2", s_pmi[s_player_model_box.curvalue].directory );
 		ent->model = re.RegisterModel( scratch );

@@ -126,15 +126,18 @@ void Com_Printf (const char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
+	size_t		msgLen;
 
 	va_start (argptr,fmt);
 	Q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 	msg[sizeof(msg)-1] = 0;
 
+	msgLen = strlen(msg);
+
 	if (rd_target)
 	{
-		if ((strlen (msg) + strlen(rd_buffer)) > (rd_buffersize - 1))
+		if ((msgLen + strlen(rd_buffer)) > (rd_buffersize - 1))
 		{
 			rd_flush(rd_target, rd_buffer);
 			*rd_buffer = 0;
@@ -147,8 +150,8 @@ void Com_Printf (const char *fmt, ...)
 	Con_Print (msg);
 
 	// also echo to debugging console
-	if (msg[strlen(msg)-1] != '\r') // skip overwrittten outputs
-	Sys_ConsoleOutput (msg);
+	if (msgLen >= 1 && msg[msgLen - 1] != '\r') // skip overwrittten outputs
+		Sys_ConsoleOutput (msg);
 
 	// logfile
 	if (logfile_active && logfile_active->value)

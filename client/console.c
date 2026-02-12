@@ -183,8 +183,8 @@ void Con_Dump_f (void)
 	buffer = (char *)calloc(1, sizeof(char) * (con.linewidth + 1));
 	if (!buffer)
 	{
-		Com_Error(ERR_FATAL, "Error allocating memory.\n");
 		fclose(f);
+		Com_Error(ERR_FATAL, "Error allocating memory.\n");
 		return;
 	}
 
